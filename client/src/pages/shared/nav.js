@@ -14,11 +14,22 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 
 const pages = ["Products", "Pricing", "Blog"];
-const userNav = [{ name: "Signup", link: "/signup" }];
+let userNav;
 
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const user = localStorage.getItem("user");
+
+  if (user) {
+    userNav = [{ name: "Déconnexion", link: "/logout" }];
+  } else {
+    userNav = [
+      { name: "Inscription", link: "/signup" },
+      { name: "Connexion", link: "/signin" },
+    ];
+  }
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -126,7 +137,7 @@ function NavBar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="Profil">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
