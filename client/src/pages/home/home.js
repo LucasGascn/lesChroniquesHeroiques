@@ -11,17 +11,18 @@ const FormPj = [{
     inputId : 'id2',
     },
 {
-    inputName:'name3',
+    inputName:'value3',
+
     value : 'value3',
     inputId : 'id3',
     },
     {
-    inputName:'name4',
+    inputName:'value4',
     value : 'value4',
     inputId : 'id4',
     },
     {
-    inputName:'name5',
+    inputName:'value5',
     value : 'value5',
     inputId : 'id5',
     },];
