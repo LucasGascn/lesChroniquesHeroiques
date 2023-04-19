@@ -5,7 +5,10 @@ const cors = require("cors");
 
 app.use(express.json());
 app.use(cors());
-require("./routes/user")(app);
+
+require("./routes/user")(app, mongoose);
+require("./routes/playerInfo")(app, mongoose);
+require("./routes/adventure")(app, mongoose);
 
 const mongoUrl =
   "mongodb+srv://admin:OqCfT4snSKtMY45S@cluster0.nrlwnj8.mongodb.net/ProjetWeb";
