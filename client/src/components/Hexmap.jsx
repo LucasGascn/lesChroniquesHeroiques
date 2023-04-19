@@ -4,7 +4,7 @@ import { BoxGeometry } from 'three'
 import { Vector2 } from 'three'
 // import { MeshBasicMaterial } from 'three'
 import { FloatType, MeshStandardMaterial, PMREMGenerator, SphereGeometry, Scene, PerspectiveCamera, WebGLRenderer, ACESFilmicToneMapping, sRGBEncoding, Mesh, Color} from 'three'
-import { RGBELoader, OrbitControls } from 'three-stdlib'
+import { RGBELoader, OrbitControls, HDRCubeTextureLoader } from 'three-stdlib'
 import { mergeBufferGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils'
 
 
@@ -17,18 +17,18 @@ const Hexmap = () => {
 
     
 
-    const loadEnvMapTexture = async(renderer,envmap) => {
+    const loadEnvMapTexture = async(renderer) => {
         // renders the texture of our environment map
         let pmrem = new PMREMGenerator(renderer);
-        let envmapTexture = await new RGBELoader().setDataType(FloatType).loadAsync()
-        envmap = pmrem.fromEquirectangular(envmapTexture).texture;
+        let envmapTexture = await new RGBELoader().setDataType(FloatType).loadAsync(require("../assets/envmap.hdr"))
+        let envmap = pmrem.fromEquirectangular(envmapTexture).texture;
         return envmap
     }
 
     
 
 
-    useEffect(()=>{
+    useEffect(async ()=>{
         const scene = new Scene()
         scene.background = new Color("honeydew")
 
@@ -42,7 +42,7 @@ const Hexmap = () => {
         renderer.setSize(1000,1000)
         renderer.toneMapping = ACESFilmicToneMapping;
         renderer.outputEncoding = sRGBEncoding;
-        // renderer.physicallyCorrectLights = true;
+        renderer.physicallyCorrectLights = true;
 
         console.log(renderer)
 
@@ -53,8 +53,8 @@ const Hexmap = () => {
         controls.dampingFactor = 0.05
         controls.enableDamping = true
 
-        let envmap;
-        loadEnvMapTexture(renderer,envmap)
+        let envmap = await loadEnvMapTexture(renderer)
+        console.log("suicide ?", envmap)
 
 
         // let sphereMesh = new Mesh(
