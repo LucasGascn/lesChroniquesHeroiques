@@ -2,10 +2,24 @@ const express = require("express");
 const { default: mongoose } = require("mongoose");
 const app = express();
 const cors = require("cors");
-
+const socketIO = require("socket.io");
+const http = require("http");
 app.use(express.json());
 app.use(cors());
-require("./routes/user")(app);
+
+const server = http.createServer(app);
+
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
+
+require("./routes/user")(app, mongoose);
+require("./routes/playerInfo")(app, mongoose);
+require("./routes/adventure")(app, mongoose);
+require("./websockets/adventureWebsocket")(mongoose, io);
 
 const mongoUrl =
   "mongodb+srv://admin:OqCfT4snSKtMY45S@cluster0.nrlwnj8.mongodb.net/ProjetWeb";
@@ -19,6 +33,6 @@ mongoose
   })
   .catch((e) => console.log(e));
 
-app.listen(5000, () => {
-  console.log("server started on port 5000");
+server.listen(5000, () => {
+  console.log("server listen on 5000");
 });
