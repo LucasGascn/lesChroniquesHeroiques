@@ -1,20 +1,14 @@
-const jwt = require("jsonwebtoken");
-
 module.exports = (app, mongoose) => {
-  const userSchema = require("../Schema/userSchema");
-  const User = mongoose.model("Users", userSchema);
-  const JWT_SECRET = "efkffjzehfjhzeufhzufhziofhziofhuerhfuzofuhzf";
+  const CharacterSchema = require("../Schema/playerInfoSchema");
+  const Character = mongoose.model("Characters", CharacterSchema);
 
-  app.post("/register", async (req, res) => {
-    const { fname, lname, email, password } = req.body;
+  app.post("/addplayer", async (req, res) => {
+    const { name, aventure, userReq } = req.body;
     try {
-      await User.create({
-        fname,
-        lname,
-        email,
-        password,
-        socketId: "",
-        roomId: "",
+      await Character.create({
+        user: userReq.user._id,
+        name,
+        aventure,
       });
       res.send({ status: "ok" });
     } catch (error) {
@@ -22,10 +16,10 @@ module.exports = (app, mongoose) => {
     }
   });
 
-  app.post("/auth", async (req, res) => {
+  app.post("/getplayer", async (req, res) => {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await Character.findOne({ email });
 
     if (!user) {
       return res.send({ status: "error", error: "user not found" });

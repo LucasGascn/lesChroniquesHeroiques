@@ -107,7 +107,15 @@ export default function SignIn() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{
+                mt: 3,
+                mb: 2,
+                backgroundColor: "#f2e7bf",
+                color: "black",
+                "&:hover": {
+                  backgroundColor: "#e4ce7c",
+                },
+              }}
             >
               Se connecter
             </Button>
