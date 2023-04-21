@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -8,55 +9,51 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
+import io from "socket.io-client";
 
 const theme = createTheme();
 
 export default function Adventure() {
-  let adventure;
+  const [adventures, setAdventure] = useState([]);
+  const userId = JSON.parse(localStorage.getItem("user")).user._id;
+  const socket = io.connect("http://localhost:5000/game", {
+    query: {
+      userId,
+    },
+  });
+
+  const createAdventure = (name, description, gameMaster, size) => {
+    socket.emit("createRoom", name, description, gameMaster, size);
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const id = JSON.parse(localStorage.getItem("user")).user._id;
-    console.log(id);
-    axios
-      .post("/addAdventure", {
-        name: data.get("name"),
-        description: data.get("desc"),
-        gameMaster: id,
-        size: 3,
-        players: [],
-        quests: [],
-        pnj: [],
-        classes: [],
-      })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    createAdventure(data.get("name"), data.get("desc"), userId, 3);
   };
-
+  const joinAdventure = async (adventureId) => {
+    socket.emit("joinRoom", adventureId, userId);
+  };
   const getAdventures = async () => {
-    await axios.get("/getAdventures");
-  };
-
-  const getAdventure = async (id) => {
-    await axios.get(`/getAdventure/${id}`).then((response) => {
-      console.log(response.data);
-      adventure = response.data;
-      adventure.name = "tuer toute la ligné de benoit";
-      updateAdventure(adventure);
+    await axios.get("/getAdventures").then((response) => {
+      setAdventure(response.data);
     });
   };
 
-  const updateAdventure = async (adventure) => {
-    await axios.post(`/updateAdventure/${adventure._id}`, {
-      adventure: adventure,
-    });
-  };
-  getAdventures();
-  getAdventure("643fdfcff465b494eee88ea9");
+  let list = adventures.map((adventure) => {
+    return (
+      <>
+        <Button
+          key={adventure._id}
+          onClick={() => {
+            joinAdventure(adventure._id);
+          }}
+        >
+          {adventure.name}
+        </Button>
+      </>
+    );
+  });
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -110,6 +107,8 @@ export default function Adventure() {
           </Box>
         </Box>
       </Container>
+      <Button onClick={getAdventures}>get adventures</Button>
+      {list}
     </ThemeProvider>
   );
 }

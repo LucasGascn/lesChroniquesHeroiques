@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 
 module.exports = (app, mongoose) => {
@@ -14,6 +13,8 @@ module.exports = (app, mongoose) => {
         lname,
         email,
         password,
+        socketId: "",
+        roomId: "",
       });
       res.send({ status: "ok" });
     } catch (error) {

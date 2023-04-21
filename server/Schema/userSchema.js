@@ -6,6 +6,8 @@ const userSchema = new mongoose.Schema(
     lname: String,
     email: { type: String, unique: true },
     password: String,
+    socketId: String,
+    roomId: String,
   },
   {
     collection: "Users",

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const adventureSchema = mongoose.Schema(
   {
     players: [mongoose.Schema.Types.ObjectId],
-    name: String,
+    name: { type: String, unique: true },
     gameMaster: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
     description: String,
     size: Number,

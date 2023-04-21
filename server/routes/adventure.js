@@ -2,9 +2,7 @@ module.exports = (app, mongoose) => {
   const adventureSchema = require("../Schema/adventureSchema");
   const Adventure = mongoose.model("Aventure", adventureSchema);
   const watcher = Adventure.watch();
-  watcher.on("change", (change) => {
-    console.log(change);
-  });
+  watcher.on("change", (change) => {});
   app.post("/addAdventure", async (req, res) => {
     const {
       name,

@@ -4,6 +4,7 @@ import Signup from "./pages/signup/signup";
 import SignIn from "./pages/signin/signin";
 import Logout from "./pages/logout/logout";
 import Adventure from "./pages/adventure/adventure";
+import Lobby from "./pages/lobby/lobby";
 
 function RoutesProvider() {
   return (
@@ -15,6 +16,7 @@ function RoutesProvider() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/adventure" element={<Adventure />} />
+        <Route path="/lobby" element={<Lobby />} />
       </Routes>
     </BrowserRouter>
   );
