@@ -1,0 +1,7 @@
+.parallax {
+    position: absolute;
+    width: 100vw;
+    left: 0px;
+    object-fit: cover;
+    z-index: -1;
+  }
