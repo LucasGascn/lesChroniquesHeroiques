@@ -6,7 +6,6 @@ import Logout from "./pages/logout/logout";
 import Player from "./pages/player/player";
 import Game from "./pages/inGame/game";
 import MusicPlayer from "./pages/player/playSound";
-import GameMaster from "./pages/MJ/gameMaster";
 import Adventure from "./pages/adventure/adventure";
 import Lobby from "./pages/lobby/lobby";
 function RoutesProvider() {
@@ -21,8 +20,6 @@ function RoutesProvider() {
         <Route path="/player" element={<Player />} />
         <Route path="/game" element={<Game />} />
         <Route path="/sound" element={<MusicPlayer />} />
-        <Route path='/mj' element={<GameMaster />} />
-
         <Route path="/adventure" element={<Adventure />} />
         <Route path="/lobby" element={<Lobby />} />
 

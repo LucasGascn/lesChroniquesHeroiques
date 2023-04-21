@@ -1,0 +1,100 @@
+@import "./nav.css";
+@import "./parallax.css";
+
+body {
+  margin: 0;
+}
+
+.App {
+  position: relative;
+}
+
+.background {
+  z-index: -1;
+}
+
+.background__image {
+  object-fit: cover;
+  opacity: 0.3;
+  z-index: -1;
+  position: absolute;
+  height: 100%;
+  width: 100vw;
+}
+
+.home__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#home__title {
+  font-size: xx-large;
+  padding: 40px;
+}
+
+.home__start {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.home__start button {
+  margin: 15px 40px;
+}
+
+.home__start__buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.home__aventures {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.home__aventures>div {
+  background-color: var(--bs-secondary);
+  margin: 2px 0;
+  padding: 7px 20px;
+
+}
+
+.home__save__card-body {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.home__save__card-header {
+  background-color: var(--bs-secondary);
+  font-size: large;
+  padding: 7px 20px;
+  border-radius: 0.5rem 0.5rem 0 0;
+  margin-bottom: 5px;
+
+}
+
+.home__saves {
+  margin: 40px;
+}
+
+
+.home__desc {
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+#home__desc__1, #home__desc__2 {
+  width: 70%;
+  background-color: var(--bs-secondary);
+  margin: 10px;
+  padding: 20px;
+  border-radius: 0.5rem;
+}
+
+#home__desc__2{
+  align-self: flex-end;
+  animation-direction: normal;
+}
