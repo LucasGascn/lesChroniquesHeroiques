@@ -1,36 +1,55 @@
-import React, { useState } from 'react';
-import { Howl, Howler } from 'howler';
+import forest from '../../asset/musique/forest.mp3';
+import storm from '../../asset/musique/storm.mp3';
 
-const MusicPlayer = () => {
-  const forestMeditationSrc = '/client/asset/musique/forestMeditation.mp3';
-  const combatSrc = '/client/asset/musique/combat.mp3';
+let isAudioPlaying = false;
+let audioStorm = null;
+let audioForest = null;
 
-  const [forestMeditationSound] = useState(new Howl({
-    src: [forestMeditationSrc],
-    preload: true,
-  }));
+function handleForestMeditation() {
+if (!audioForest) {
+audioForest = new Audio(forest);
+}
+if (isAudioPlaying && audioStorm) {
+audioStorm.pause();
+isAudioPlaying = false;
+}
+if (audioForest.paused) {
+audioForest.play().catch(error => console.log(error));
+isAudioPlaying = true;
+} else {
+audioForest.pause();
+isAudioPlaying = false;
+}
+}
 
-  const [combatSound] = useState(new Howl({
-    src: [combatSrc],
-    preload: true,
-  }));
+function handleStormSound() {
+if (!audioStorm) {
+audioStorm = new Audio(storm);
+}
+if (isAudioPlaying && audioForest) {
+audioForest.pause();
+isAudioPlaying = false;
+}
+if (audioStorm.paused) {
+audioStorm.play().catch(error => console.log(error));
+isAudioPlaying = true;
+} else {
+audioStorm.pause();
+isAudioPlaying = false;
+}
+}
 
-  const playSound = (sound) => {
-    if (Howler.ctx.state === 'suspended') {
-      Howler.ctx.resume();
-    }
-    sound.play();
-  };
-  
-  return (
-    <div>
-      <button onClick={() => playSound(combatSound)}>
-        Combat
-      </button>
-      <div onClick={() => playSound(forestMeditationSound)}>
-        Forest Meditation
-      </div>
-    </div>
-  );
-  }
+function MusicPlayer() {
+return (
+<div>
+<button onClick={() => handleForestMeditation()}>Méditation dans la forêt</button>
+<button onClick={() => handleStormSound()}>Son de tempête</button>
+</div>
+);
+}
+
 export default MusicPlayer;
+
+
+
+

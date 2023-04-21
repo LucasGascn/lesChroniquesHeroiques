@@ -1,7 +1,14 @@
 import { useState } from "react";
-import MusicPlayer from "./playSound";
+import NavGame from "../shared/navGame";
 const FormPj = [
-    {
+  {
+    inputName: "Nom de personnage",
+    value: '',
+    inputId: "id0",
+    buttonId: "0",
+    isChanged: false
+  },
+  {
       inputName: "Dextérité",
       value: 0,
       inputId: "id1",
@@ -78,13 +85,14 @@ const FormPj = [
     ));
   
     return (
-      <div>
-        <form>{FPJ}
-            <button onClick={getAllValue}>editAll</button>
-        </form>
-
-        <MusicPlayer />
-      </div>
+      <>
+        <NavGame />
+        <div>
+          <form>{FPJ}
+              <button onClick={getAllValue}>editAll</button>
+          </form>
+        </div>
+      </>
     );
   }
 export default Player;  
