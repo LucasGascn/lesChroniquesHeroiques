@@ -1,21 +1,8 @@
-const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 
-module.exports = (app) => {
-  const userSchema = new mongoose.Schema(
-    {
-      fname: String,
-      lname: String,
-      email: { type: String, unique: true },
-      password: String,
-    },
-    {
-      collection: "Users",
-    }
-  );
-  mongoose.model("Users", userSchema);
-
-  const User = mongoose.model("Users");
+module.exports = (app, mongoose) => {
+  const userSchema = require("../Schema/userSchema");
+  const User = mongoose.model("Users", userSchema);
   const JWT_SECRET = "efkffjzehfjhzeufhzufhziofhziofhuerhfuzofuhzf";
 
   app.post("/register", async (req, res) => {
@@ -26,6 +13,8 @@ module.exports = (app) => {
         lname,
         email,
         password,
+        socketId: "",
+        roomId: "",
       });
       res.send({ status: "ok" });
     } catch (error) {
