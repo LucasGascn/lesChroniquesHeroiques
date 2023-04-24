@@ -19,7 +19,7 @@ const io = require("socket.io")(server, {
 require("./routes/user")(app, mongoose);
 require("./routes/playerInfo")(app, mongoose);
 require("./routes/adventure")(app, mongoose);
-require("./websockets/adventureWebsocket")(mongoose, io);
+require("./websockets/adventureWebsocket")(mongoose, io, app);
 
 const mongoUrl =
   "mongodb+srv://admin:OqCfT4snSKtMY45S@cluster0.nrlwnj8.mongodb.net/ProjetWeb";
