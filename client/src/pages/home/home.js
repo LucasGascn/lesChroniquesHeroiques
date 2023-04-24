@@ -1,6 +1,9 @@
 import Save from "./save";
 import Button from 'react-bootstrap/Button';
 import FadeIn from "../shared/fade-in";
+import Description from "./description";
+import Image from 'react-bootstrap/Image';
+import Table from '../../assets/images/table.png'
 
 
 const listAventures = [{
@@ -41,17 +44,16 @@ const Home = ({ ...props }) => {
             </div>
         </div>
         <div className="home__desc">
-            <FadeIn direction='right'>
-                <p className="description description--right">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut quis ullamcorper velit. Quisque varius justo vel tempus tincidunt. Sed at ligula eu quam pulvinar semper. Etiam luctus, ipsum venenatis bibendum consectetur, leo dui hendrerit neque, sagittis volutpat risus neque et metus. Donec malesuada fermentum tellus non faucibus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc non fermentum mauris. Cras eget convallis urna. Aliquam erat volutpat. Phasellus suscipit ornare nisi.
-                </p>
-            </FadeIn>
-            <FadeIn direction='left'>
-                <p className="description description--left">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut quis ullamcorper velit. Quisque varius justo vel tempus tincidunt. Sed at ligula eu quam pulvinar semper. Etiam luctus, ipsum venenatis bibendum consectetur, leo dui hendrerit neque, sagittis volutpat risus neque et metus. Donec malesuada fermentum tellus non faucibus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc non fermentum mauris. Cras eget convallis urna. Aliquam erat volutpat. Phasellus suscipit ornare nisi.
-                </p>
-            </FadeIn>
+            <Description direction={"right"} content={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut quis ullamcorper velit. Quisque varius justo vel tempus tincidunt. Sed at ligula eu quam pulvinar semper. Etiam luctus, ipsum venenatis bibendum consectetur, leo dui hendrerit neque, sagittis volutpat risus neque et metus. Donec malesuada fermentum tellus non faucibus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc non fermentum mauris. Cras eget convallis urna. Aliquam erat volutpat. Phasellus suscipit ornare nisi."}>
+            </Description>
+            <Description direction={"left"} content={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut quis ullamcorper velit. Quisque varius justo vel tempus tincidunt. Sed at ligula eu quam pulvinar semper. Etiam luctus, ipsum venenatis bibendum consectetur, leo dui hendrerit neque, sagittis volutpat risus neque et metus. Donec malesuada fermentum tellus non faucibus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc non fermentum mauris. Cras eget convallis urna. Aliquam erat volutpat. Phasellus suscipit ornare nisi."}>
+            </Description>
         </div>
+        <div>
+            <Image src={Table}></Image>
+        </div>
+
+
     </div>
         ;
 }
