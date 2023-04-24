@@ -3,6 +3,8 @@ import Home from "./pages/home/home";
 import Signup from "./pages/signup/signup";
 import SignIn from "./pages/signin/signin";
 import Logout from "./pages/logout/logout";
+import Hexmap from "./components/Hexmap";
+import WorldMap from "./components/WorldMap";
 import Player from "./pages/player/player";
 import Adventure from "./pages/adventure/adventure";
 import Lobby from "./pages/lobby/lobby";
@@ -16,6 +18,8 @@ function RoutesProvider() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/hexmap" element={<Hexmap />} />
+        <Route path="/world" element={<WorldMap/>} />
         <Route path="/player" element={<Player />} />
         <Route path="/adventure" element={<Adventure />} />
         <Route path="/lobby" element={<Lobby />} />
