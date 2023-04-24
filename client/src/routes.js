@@ -3,6 +3,8 @@ import Home from "./pages/home/home";
 import Signup from "./pages/signup/signup";
 import SignIn from "./pages/signin/signin";
 import Logout from "./pages/logout/logout";
+import Hexmap from "./components/Hexmap";
+import WorldMap from "./components/WorldMap";
 
 function RoutesProvider() {
   return (
@@ -13,6 +15,8 @@ function RoutesProvider() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/hexmap" element={<Hexmap />} />
+        <Route path="/world" element={<WorldMap/>} />
       </Routes>
     </BrowserRouter>
   );

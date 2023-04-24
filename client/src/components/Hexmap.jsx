@@ -1,13 +1,20 @@
 import { useEffect, useRef} from 'react'
-import { CylinderGeometry, DoubleSide, PCFSoftShadowMap, PointLight } from 'three'
-import { BoxGeometry, SphereGeometry} from 'three'
 import { Vector2 } from 'three'
 // import { MeshBasicMaterial } from 'three'
-import { FloatType, MeshStandardMaterial, MeshPhysicalMaterial, PMREMGenerator, Scene, PerspectiveCamera, WebGLRenderer, ACESFilmicToneMapping, sRGBEncoding, Mesh, Color} from 'three'
+import { 
+    BoxGeometry, SphereGeometry,
+    CylinderGeometry, DoubleSide, PCFSoftShadowMap, PointLight,
+     FloatType, 
+     MeshStandardMaterial, 
+     MeshPhysicalMaterial,
+     PMREMGenerator, 
+     Scene, 
+     PerspectiveCamera, WebGLRenderer, 
+     ACESFilmicToneMapping, TextureLoader, 
+     sRGBEncoding, Mesh, Color} from 'three'
 import { RGBELoader, OrbitControls} from 'three-stdlib'
 import { mergeBufferGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils'
 import { SimplexNoise } from "simplex-noise"
-import { TextureLoader } from 'three'
 
 const Hexmap = () => {
     const mount = useRef(null)
