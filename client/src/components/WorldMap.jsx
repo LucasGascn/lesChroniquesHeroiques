@@ -14,6 +14,7 @@ import {
      sRGBEncoding, Mesh, Color} from 'three'
 import { RGBELoader, OrbitControls} from 'three-stdlib'
 import { mergeBufferGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils'
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -21,6 +22,8 @@ import { mergeBufferGeometries } from 'three/examples/jsm/utils/BufferGeometryUt
 const WorldMap = () =>{
     const windowSize = useRef([window.innerWidth, window.innerHeight])
     const mount = useRef(null)
+
+    const navigate = useNavigate()
 
     const scene = new Scene()
     scene.background = new Color("#f3daa1")
@@ -264,17 +267,20 @@ const WorldMap = () =>{
                 }
         
                 onClick(e) {
-                    console.log("test ?")
+                    navigate("/hexmap",{replace: true})
+                    window.removeEventListener("click",(e))
                 }
 
                 onPointerOver(e){
-                    this.material.color.set('hotpink')
-                    this.material.color.convertSRGBToLinear()
+                    console.log("over")
+                    // this.material.color.set('hotpink')
+                    // this.material.color.convertSRGBToLinear()
                 }
 
                 onPointerOut(e){
-                    this.material.color.set(new Color(0x42974a))
-                    this.material.color.convertSRGBToLinear()
+                    console.log("out")
+                    // this.material.color.set(new Color(0x42974a))
+                    // this.material.color.convertSRGBToLinear()
                 }
             }
 
