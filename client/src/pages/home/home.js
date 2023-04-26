@@ -4,6 +4,8 @@ import Card from "react-bootstrap/Card";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Dialog from "@mui/material/Dialog";
+import AdventurePopUp from "./adventurePopUp";
 
 const listAventures = [
   {
@@ -140,6 +142,9 @@ const Home = ({ ...props }) => {
           Aliquam erat volutpat. Phasellus suscipit ornare nisi.
         </p>
       </div>
+      <Dialog open={open} onClose={handleClose} fullWidth>
+        <AdventurePopUp handleClose={handleClose}></AdventurePopUp>
+      </Dialog>
     </div>
   );
 };
