@@ -1,6 +1,8 @@
 module.exports = (app, mongoose) => {
   const adventureSchema = require("../Schema/adventureSchema");
   const Adventure = mongoose.model("Aventure", adventureSchema);
+  const userSchema = require("../Schema/userSchema");
+  const User = mongoose.model("Users", userSchema);
   const watcher = Adventure.watch();
   watcher.on("change", (change) => {});
   app.post("/addAdventure", async (req, res) => {
@@ -42,7 +44,7 @@ module.exports = (app, mongoose) => {
   app.get("/getAdventure/:id", async (req, res) => {
     const adventureId = req.params.id;
     const adventure = await Adventure.findById(adventureId);
-
+    Adventure.populate(adventure, { path: "Users" });
     if (!adventure) {
       return res.send({ status: "error", error: "aventure not found" });
     }
