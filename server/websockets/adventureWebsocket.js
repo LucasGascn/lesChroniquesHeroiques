@@ -6,6 +6,7 @@ module.exports = (mongoose, io, app) => {
   const User = mongoose.model("Users", userSchema);
   const adventureSchema = require("../Schema/adventureSchema");
   const Adventure = mongoose.model("Adventure", adventureSchema);
+
   app.post("/joinAdventure/:id", async (req, res) => {
     const adventureId = req.params.id;
     const playerId = req.body.playerId;
@@ -20,7 +21,6 @@ module.exports = (mongoose, io, app) => {
       if (soc) {
         soc.join(adventureId);
       }
-      //console.log(io.of("/game").adapter.rooms);
       io.of("/game")
         .to(adventureId)
         .emit("roomJoined", `${user.fname} a join la room`);
