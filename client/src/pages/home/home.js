@@ -27,10 +27,9 @@ const listAventures = [
 
 const Home = ({ ...props }) => {
   const navigate = useNavigate();
-
+  const [open, setOpen] = useState(false);
   const userJson = JSON.parse(localStorage.getItem("user"));
   let userId;
-
   if (userJson) {
     userId = userJson.user._id;
   } else {
@@ -42,10 +41,23 @@ const Home = ({ ...props }) => {
   const getAdventures = async () => {
     await axios.get("/getAdventures").then((response) => {
       const adventure = response.data;
-      console.log(adventure);
       setContinueAdv(adventure.filter((adv) => adv.players.includes(userId)));
       setJoinAdv(adventure.filter((adv) => !adv.players.includes(userId)));
     });
+  };
+
+  const addAdventure = (newAdv) => {
+    const advCopy = [...joinAdv];
+    advCopy.push(newAdv);
+    setJoinAdv(advCopy);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   function navigateToLobby(id) {
@@ -69,7 +81,9 @@ const Home = ({ ...props }) => {
           >
             Rejoindre
           </Button>
-          <Button size="lg">Créer</Button>
+          <Button size="lg" onClick={() => handleOpen()}>
+            Créer
+          </Button>
         </div>
         <div className="home__saves d-flex justify-content-around w-100">
           <div
@@ -143,7 +157,10 @@ const Home = ({ ...props }) => {
         </p>
       </div>
       <Dialog open={open} onClose={handleClose} fullWidth>
-        <AdventurePopUp handleClose={handleClose}></AdventurePopUp>
+        <AdventurePopUp
+          handleClose={handleClose}
+          addAdventure={addAdventure}
+        ></AdventurePopUp>
       </Dialog>
     </div>
   );
