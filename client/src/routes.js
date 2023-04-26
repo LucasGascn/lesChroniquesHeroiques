@@ -4,10 +4,12 @@ import Signup from "./pages/signup/signup";
 import SignIn from "./pages/signin/signin";
 import Logout from "./pages/logout/logout";
 import Player from "./pages/player/player";
-import Game from "./pages/inGame/game";
 import MusicPlayer from "./pages/player/playSound";
 import Adventure from "./pages/adventure/adventure";
 import Lobby from "./pages/lobby/lobby";
+import GameMaster from "./pages/mj/gameMaster";
+import AdventurePnj from "./pages/pnj/pnj";
+import AdventureQuests from "./pages/quest/quest";
 function RoutesProvider() {
   return (
     <BrowserRouter>
@@ -18,11 +20,12 @@ function RoutesProvider() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/player" element={<Player />} />
-        <Route path="/game" element={<Game />} />
         <Route path="/sound" element={<MusicPlayer />} />
         <Route path="/adventure" element={<Adventure />} />
         <Route path="/lobby" element={<Lobby />} />
-
+        <Route path="/mj" element={<GameMaster />} />
+        <Route path="/pnj" element={<AdventurePnj />}/>
+        <Route path="/quest" element={<AdventureQuests />}/>
       </Routes>
     </BrowserRouter>
   );

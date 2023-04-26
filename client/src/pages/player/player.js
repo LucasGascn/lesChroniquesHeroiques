@@ -1,5 +1,4 @@
 import { useState } from "react";
-import NavGame from "../shared/navGame";
 const FormPj = [
   {
     inputName: "Nom de personnage",
@@ -86,7 +85,7 @@ const FormPj = [
   
     return (
       <>
-        <NavGame />
+
         <div>
           <form>{FPJ}
               <button onClick={getAllValue}>editAll</button>

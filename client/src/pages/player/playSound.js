@@ -1,55 +1,49 @@
-import forest from '../../asset/musique/forest.mp3';
-import storm from '../../asset/musique/storm.mp3';
+import forest from '../../assets/musique/forest.mp3';
+import storm from '../../assets/musique/storm.mp3';
+import wind from '../../assets/musique/wind.mp3'
+const audioFiles = [
+{name: 'forest', url: forest},
+{name: 'storm', url: storm},
+{name: 'wind', url: wind},
+];
 
 let isAudioPlaying = false;
-let audioStorm = null;
-let audioForest = null;
+let currentAudio = null;
 
-function handleForestMeditation() {
-if (!audioForest) {
-audioForest = new Audio(forest);
-}
-if (isAudioPlaying && audioStorm) {
-audioStorm.pause();
-isAudioPlaying = false;
-}
-if (audioForest.paused) {
-audioForest.play().catch(error => console.log(error));
-isAudioPlaying = true;
-} else {
-audioForest.pause();
-isAudioPlaying = false;
-}
-}
+const audioInstances = {};
 
-function handleStormSound() {
-if (!audioStorm) {
-audioStorm = new Audio(storm);
-}
-if (isAudioPlaying && audioForest) {
-audioForest.pause();
-isAudioPlaying = false;
-}
-if (audioStorm.paused) {
-audioStorm.play().catch(error => console.log(error));
-isAudioPlaying = true;
-} else {
-audioStorm.pause();
-isAudioPlaying = false;
-}
+audioFiles.forEach((audioFile) => {
+  audioInstances[audioFile.name] = new Audio(audioFile.url);
+});
+
+function handleAudioButtonClick(audioName) {
+  if (!currentAudio || currentAudio.name !== audioName) {
+    if (currentAudio) {
+    currentAudio.instance.pause();
+  }
+  currentAudio = {name: audioName, instance: audioInstances[audioName]};
+  currentAudio.instance.play().catch(error => console.log(error));
+  isAudioPlaying = true;
+  } else {
+  if (isAudioPlaying) {
+    currentAudio.instance.pause();
+    isAudioPlaying = false;
+  } else {
+      currentAudio.instance.play().catch(error => console.log(error));
+      isAudioPlaying = true;
+    }
+  }
 }
 
 function MusicPlayer() {
-return (
-<div>
-<button onClick={() => handleForestMeditation()}>Méditation dans la forêt</button>
-<button onClick={() => handleStormSound()}>Son de tempête</button>
-</div>
-);
+  return (
+    <div>
+      {audioFiles.map((audioFile) => (
+        <button key={audioFile.name} onClick={() => handleAudioButtonClick(audioFile.name)}>
+        {audioFile.name}</button>
+      ))}
+    </div>
+  );
 }
 
 export default MusicPlayer;
-
-
-
-

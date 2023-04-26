@@ -39,20 +39,34 @@ export default function Adventure() {
     });
   };
 
-  let list = adventures.map((adventure) => {
-    return (
-      <>
-        <Button
-          key={adventure._id}
-          onClick={() => {
-            joinAdventure(adventure._id);
-          }}
-        >
-          {adventure.name}
-        </Button>
-      </>
-    );
-  });
+  // const updateAdventure = async (adventure) => {
+  //   console.log(adventure)
+
+  //   adventure.quests.push({
+  //     nom: "truc",
+  //     recompense: "machin",
+  //     description: "bidule"
+  //   })
+  //   console.log(adventure)
+  //   await axios.post(`/updateAdventure/${adventure._id}`, {
+  //     adventure: adventure
+  //   })
+  // }
+
+  // let list = adventures.map((adventure) => {
+  //   return (
+  //     <>
+  //       <Button
+  //         key={adventure._id}
+  //         onClick={() => {
+  //           updateAdventure(adventure)
+  //         }}
+  //       >
+  //         {adventure.name}
+  //       </Button>
+  //     </>
+  //   );
+  // });
 
   return (
     <ThemeProvider theme={theme}>
@@ -107,8 +121,8 @@ export default function Adventure() {
           </Box>
         </Box>
       </Container>
-      <Button onClick={getAdventures}>get adventures</Button>
-      {list}
+      {/* <Button onClick={getAdventures}>get adventures</Button>
+      {list} */}
     </ThemeProvider>
   );
 }
