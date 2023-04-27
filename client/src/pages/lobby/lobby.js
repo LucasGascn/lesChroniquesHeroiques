@@ -1,91 +1,75 @@
 import { Button } from "@mui/material";
+import io, { Manager } from "socket.io-client";
+import axios from "axios";
+import { useEffect, useState, useRef, useContext, useReducer } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Lobby() {
+export default function Lobby(props) {
   const queryParameters = new URLSearchParams(window.location.search);
-  const id = queryParameters.get("adventureId");
+  const id = queryParameters.get("id");
+  const navigate = useNavigate();
 
-  const players = [
-    {
-      name: "jean michel",
-      class: "barbare",
-      stats: [
-        {
-          name: "hp",
-          value: 100,
-          max: 100,
-        },
-        {
-          name: "strengh",
-          value: 70,
-          max: 100,
-        },
-        {
-          name: "dexterity",
-          value: 70,
-          max: 100,
-        },
-        {
-          name: "intel",
-          value: 70,
-          max: 100,
-        },
-      ],
-    },
-    {
-      name: "jean michel",
-      class: "barbare",
-      stats: [
-        {
-          name: "hp",
-          value: 100,
-          max: 100,
-        },
-        {
-          name: "strengh",
-          value: 70,
-          max: 100,
-        },
-        {
-          name: "dexterity",
-          value: 70,
-          max: 100,
-        },
-        {
-          name: "intel",
-          value: 70,
-          max: 100,
-        },
-      ],
-    },
-    {
-      name: "jean michel",
-      class: "barbare",
-      stats: [
-        {
-          name: "hp",
-          value: 100,
-          max: 100,
-        },
-        {
-          name: "strengh",
-          value: 70,
-          max: 100,
-        },
-        {
-          name: "dexterity",
-          value: 70,
-          max: 100,
-        },
-        {
-          name: "intel",
-          value: 70,
-          max: 100,
-        },
-      ],
-    },
-  ];
+  const [adventure, setAdventure] = useState({});
+  const [characters, setCharacters] = useState([]);
+  const userId = JSON.parse(localStorage.getItem("user")).user._id;
+  const [socket, setSocket] = useState();
 
-  const playersList = players.map((player) => {
+  function leaveRoom() {
+    axios.post(`leaveAdventure/${userId}`).then((response) => {
+      socket.disconnect();
+      navigate("/home");
+    });
+  }
+  async function getAdventure(id) {
+    await axios.get(`/getAdventure/${id}`).then((response) => {
+      setAdventure(response.data);
+    });
+  }
+
+  function JoinRoom() {
+    adventure.players.push(userId);
+    axios
+      .post(`/joinAdventure/${id}`, { playerId: userId })
+      .then((response) => {
+        console.log(response);
+      });
+  }
+
+  async function getCharacters(id) {
+    await axios.get(`/getPlayerByAdventure/${id}`).then((response) => {
+      setCharacters(response.data.data);
+    });
+  }
+
+  useEffect(function () {
+    setSocket(
+      io.connect("http://localhost:5000/game", {
+        query: {
+          userId,
+        },
+      })
+    );
+    getAdventure(id);
+    getCharacters(id);
+  }, []);
+
+  useEffect(
+    function () {
+      if (adventure.players) {
+        JoinRoom();
+      }
+    },
+    [adventure]
+  );
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("roomJoined", (msg) => {
+        console.log(msg);
+      });
+    }
+  }, [socket]);
+  const playersList = characters.map((player) => {
     return (
       <>
         <div className="col-6 mt-2 d-flex justify-content-center">
@@ -110,12 +94,13 @@ export default function Lobby() {
       </>
     );
   });
+
   return (
     <div className="container">
       <div className="row card  mt-3">
         <div className="col d-flex justify-content-between align-items-center">
-          <Button>leave</Button>
-          <span>name</span>
+          <Button onClick={() => leaveRoom()}>leave</Button>
+          <span>{adventure.name}</span>
           <Button>create</Button>
         </div>
       </div>

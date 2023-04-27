@@ -1,7 +1,19 @@
-const Save = ({ name, date, character}) =>  <>
-    <div>{name}</div>
-    <div className="save__date">{date}</div>
-    <div>{character}</div>
-  </>
+// import { useNavigate } from "react-router-dom";
 
-export default Save;
+// function navigate(id) {
+//   const navigate = useNavigate();
+//   navigate(`/lobby?id=${id}`);
+// }
+// const Save = ({ name, _id }) => (
+//   <>
+//     <div
+//       onClick={() => {
+//         navigate(_id);
+//       }}
+//     >
+//       {name}
+//     </div>
+//   </>
+// );
+
+// export default Save;

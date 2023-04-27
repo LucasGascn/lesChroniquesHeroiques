@@ -3,7 +3,7 @@ const playerInfoSchema = mongoose.Schema(
   {
     user: mongoose.Schema.Types.ObjectId,
     name: String,
-    aventure: mongoose.Schema.Types.ObjectId,
+    adventure: mongoose.Schema.Types.ObjectId,
     stats: [],
     inventory: [],
     currency: Number,

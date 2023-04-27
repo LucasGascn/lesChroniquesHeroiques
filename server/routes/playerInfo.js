@@ -36,4 +36,13 @@ module.exports = (app, mongoose) => {
     }
     res.send({ status: "error", error: "Mauvais mot de passe" });
   });
+
+  app.get("/getPlayerByAdventure/:id", async (req, res) => {
+    const adventureId = req.params.id;
+
+    const characters = await Character.find({ adventure: adventureId });
+    if (characters) {
+      return res.send({ data: characters });
+    }
+  });
 };
