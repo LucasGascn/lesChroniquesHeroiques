@@ -3,65 +3,85 @@ import axios from "axios";
 import cadenas from '../../assets/images/cadenas.png'
 import cadenasOpen from '../../assets/images/cadenas-ouvert.png'
 import '../../styles/gameMaster.css'
-function AdventurePnj() {
-  const [pnjs, setPnjs] = useState([]);
-  const [lock, setLock] = useState('none');
-  const [open, setOpen] = useState('flex');
-  const [adventure, setAdventure] = useState({})
 
+function AdventurePnj(){
+    const [pnjs, setPnjs] = useState([]);
+    const [adventure, setAdventure] = useState({})
+    const userId = JSON.parse(localStorage.getItem("user")).user._id;
 
-  async function getAdventure() {
-    await axios.get("/getAdventure/64414ea8f0c83651f0ae38c8")
-      .then((res) => {
-        setAdventure(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  async function getPnj() {
-    await axios.get("/getPnjs/64414ea8f0c83651f0ae38c8")
-      .then((res) => {
-        console.log(res.data)
-        setPnjs(res.data);
-        console.log(pnjs);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+    async function getPnj() {
+      await axios.get("/getPnjs/64414ea8f0c83651f0ae38c8")
+        .then((res) => {
+          console.log(res.data)
+          setPnjs(res.data);
+          console.log(pnjs);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   
-  async function toggleLock(index) {
-    setLock(lock === 'none' ? 'flex' : 'none');
-    setOpen(open === 'none' ? 'flex' : 'none');
-    if(open === "flex"){ adventure.pnj[index].status = "unlock"}
-    else {adventure.pnj[index].status = "lock"}
-    const updateQuestUrl = "/updateAdventure/643fadc533751688af13a15e";
-    await axios.post(updateQuestUrl, adventure)
-        .then(res => console.log(res))
-        .catch(error => console.log(error));
-    console.log(adventure.pnj[index]);
-}
-  useEffect(() => {
-    getAdventure()
-    getPnj()
-  }, []);
+    async function getAdventure() {
+      try {
+        const response = await axios.get("/getAdventure/64414ea8f0c83651f0ae38c8")
+        setAdventure(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
-  return (
-    <>
-    <h1>La liste de vos PNJ</h1>
-      {pnjs.map((pnj, index) => (
-        <div key={index}>
-          <h2>{pnj.prenom} {pnj.nom}</h2>
-          <p>{pnj.description}</p>
+    useEffect(() => {
+        getPnj()
+        getAdventure() 
+    }, []);
 
-          <button onClick={() => toggleLock(index)} style={{display: open}}><img className="closeLock" src={cadenas} alt="cadenas fermé"></img></button>
-          <button onClick={() => toggleLock(index)} style={{display: lock}}><img className="openLock" src={cadenasOpen} alt="cadenas ouvert"></img></button>
+    async function toggleLock(index) {
+      const newAdventure = { ...adventure };
+      newAdventure.pnj[index].status = newAdventure.pnj[index].status === "lock" ? "unlock" : "lock";
+      setAdventure(newAdventure);
+
+      const updatePnjUrl = "/updateAdventure/643fadc533751688af13a15e";
+      try {
+        const response = await axios.post(updatePnjUrl, newAdventure);
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    if ( userId !== adventure.gameMaster ){
+      return(
+        <div>
+          <h1>La liste des quêtes disponibles</h1>
+          {pnjs.map((pnj, index) => (
+            adventure.pnj[index].status === 'unlock' &&
+            <div key={index}>
+              <h2>{pnj.nom} {pnj.recompense}</h2>
+              <p>{pnj.description}</p>
+            </div>
+          ))}
+        </div>        
+      )
+    } else {
+      return (
+        <div>
+          <h1>La liste des quêtes</h1>
+          {pnjs.map((pnj, index) => (
+            <div key={index}>
+              <h2>{pnj.nom} {pnj.recompense}</h2>
+              <p>{pnj.description}</p>
+              <button onClick={() => toggleLock(index)}>
+                {adventure.pnj[index].status === "unlock" ? (
+                  <img className="openLock" src={cadenasOpen} alt="cadenas ouvert" />
+                ) : (
+                  <img className="closeLock" src={cadenas} alt="cadenas fermé" />
+                )}
+              </button>
+            </div>
+          ))}
+
         </div>
-      ))}
-    </>
-  );
+    );
 }
-
+}
 export default AdventurePnj;

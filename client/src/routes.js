@@ -30,9 +30,6 @@ function RoutesProvider() {
         <Route path="/quest" element={<AdventureQuests />}/>
         <Route path="/hexmap" element={<Hexmap />} />
         <Route path="/world" element={<WorldMap/>} />
-        <Route path="/player" element={<Player />} />
-        <Route path="/adventure" element={<Adventure />} />
-        <Route path="/lobby" element={<Lobby />} />
       </Routes>
     </BrowserRouter>
   );

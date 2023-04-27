@@ -6,29 +6,26 @@ import '../../styles/gameMaster.css'
 
 function AdventureQuests(){
     const [quests, setQuests] = useState([]);
-    const [lock, setLock] = useState('none');
-    const [open, setOpen] = useState('flex');
     const [adventure, setAdventure] = useState({})
+    const userId = JSON.parse(localStorage.getItem("user")).user._id;
 
-    
     async function getQuest() {
-      await axios.get("/getQuests/64414ea8f0c83651f0ae38c8")
-        .then((res) => {
-          setQuests(res.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-    async function getAdventure() {
-        await axios.get("/getAdventure/64414ea8f0c83651f0ae38c8")
-          .then((res) => {
-            setAdventure(res.data);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+      try {
+        const response = await axios.get("/getQuests/64414ea8f0c83651f0ae38c8")
+        setQuests(response.data);
+      } catch (error) {
+        console.log(error);
       }
+    }
+  
+    async function getAdventure() {
+      try {
+        const response = await axios.get("/getAdventure/64414ea8f0c83651f0ae38c8")
+        setAdventure(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
     useEffect(() => {
         getQuest()
@@ -36,47 +33,52 @@ function AdventureQuests(){
     }, []);
 
     async function toggleLock(index) {
-      setLock(lock === 'none' ? 'flex' : 'none');
-      setOpen(open === 'none' ? 'flex' : 'none');
-      if(open === "flex") {
-          adventure.quests[index].status = "unlock";
-      }
-      else {
-          adventure.quests[index].status = "lock";
-      }
-      
-      console.log(adventure.quests);
-      
+      const newAdventure = { ...adventure };
+      newAdventure.quests[index].status = newAdventure.quests[index].status === "lock" ? "unlock" : "lock";
+      setAdventure(newAdventure);
+
       const updateQuestUrl = "/updateAdventure/643fadc533751688af13a15e";
-      await axios.post(updateQuestUrl, adventure)
-          .then(res => console.log(res))
-          .catch(error => console.log(error));
-  }
-    if(!adventure.gameMaster && quests.status =='open'){
-        return(
-            <div>
-                {quests.map((quest, index) => (
-                <div key={index}>
-                <h2>{quest.nom} {quest.recompense}</h2>
-                    <p>{quest.description}</p>
-                </div>
-                ))}
+      try {
+        const response = await axios.post(updateQuestUrl, newAdventure);
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    if ( userId !== adventure.gameMaster ){
+      return(
+        <div>
+          <h1>La liste des quêtes disponibles</h1>
+          {quests.map((quest, index) => (
+            adventure.quests[index].status === 'unlock' &&
+            <div key={index}>
+              <h2>{quest.nom} {quest.recompense}</h2>
+              <p>{quest.description}</p>
             </div>
-                
-    )}
-    return (
-        <>
-            <h1>La liste des quêtes</h1>
-            {quests.map((quest, index) => (
-                <div key={index}>
-                <h2>{quest.nom} {quest.recompense}</h2>
-                    <p>{quest.description}</p>
-                    <button onClick={() => toggleLock(index)} style={{display: open}}><img className="closeLock" src={cadenas} alt="cadenas fermé"></img></button>
-                    <button onClick={() => toggleLock(index)} style={{display: lock}}><img className="openLock" src={cadenasOpen} alt="cadenas ouvert"></img></button>
-                </div>
-            ))}
-        </>
+          ))}
+        </div>        
+      )
+    } else {
+      return (
+        <div>
+          <h1>La liste des quêtes</h1>
+          {quests.map((quest, index) => (
+            <div key={index}>
+              <h2>{quest.nom} {quest.recompense}</h2>
+              <p>{quest.description}</p>
+              <button onClick={() => toggleLock(index)}>
+                {adventure.quests[index].status === "unlock" ? (
+                  <img className="openLock" src={cadenasOpen} alt="cadenas ouvert" />
+                ) : (
+                  <img className="closeLock" src={cadenas} alt="cadenas fermé" />
+                )}
+              </button>
+            </div>
+          ))}
+
+        </div>
     );
 }
-
+}
 export default AdventureQuests;
