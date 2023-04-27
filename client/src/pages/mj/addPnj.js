@@ -14,14 +14,9 @@ function AddPnj() {
       setError('Veuillez remplir tous les champs');
       return;
     }
-    const newPnj = {
-      name: pnjName,
-      surname: pnjSurname,
-      description: pnjDescription,
-      status: 'lock'
-    };
+    const newPnj = { nom: pnjName,prenom: pnjSurname,description: pnjDescription,status: 'lock'};
     try {
-      await axios.post(`/updateAdventure/643fadc533751688af13a15e`, { pnj: newPnj });
+      await axios.post(`/updateAdventure/64414ea8f0c83651f0ae38c8`, { pnj: newPnj });
       console.log('Un nouveau PNJ a été ajouté');
       setPnjName('');
       setPnjSurname('');
@@ -35,9 +30,9 @@ function AddPnj() {
     <>
       <p>Définissez votre PNJ</p>
       <form onSubmit={submitMj}>
-        Nom : <input type="text" name="pnjName" value={pnjName} onChange={(e) => setPnjName(e.target.value)} />
-        Prénom : <input type="text" name="pnjSurname" value={pnjSurname} onChange={(e) => setPnjSurname(e.target.value)} />
-        Description : <input type="text" name="pnjDescription" value={pnjDescription} onChange={(e) => setPnjDescription(e.target.value)} />
+        Nom : <input type="text" name="nom" value={pnjName} onChange={(e) => setPnjName(e.target.value)} />
+        Prénom : <input type="text" name="prenom" value={pnjSurname} onChange={(e) => setPnjSurname(e.target.value)} />
+        Description : <input type="text" name="description" value={pnjDescription} onChange={(e) => setPnjDescription(e.target.value)} />
         <button type="submit">Ajouter PNJ</button>
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
