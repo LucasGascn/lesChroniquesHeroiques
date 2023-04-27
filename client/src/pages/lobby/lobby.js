@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState, useRef, useContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateCharacterPopUp from './createCharacterPopUp'
+import CharacterInfosPopUp from './characterInfosPopUp'
 import Dialog from "@mui/material/Dialog";
 
 
@@ -15,6 +16,8 @@ export default function Lobby(props) {
   const [adventure, setAdventure] = useState({});
   const [characters, setCharacters] = useState([]);
   const [open, setOpen] = useState(false);
+  const [currentUserChar, setCurrentUserChar] = useState(false);
+
   const userId = JSON.parse(localStorage.getItem("user")).user._id;
   const [socket, setSocket] = useState();
 
@@ -30,49 +33,21 @@ export default function Lobby(props) {
     });
   }
 
-  async function createCharacter(){
-    let character= {
-      name: "bidule",
-      job: "le vrai orc raciste",
-      userId: userId,
-      adventureId: id,
-      stats: [
-        {
-          name: "hp",
-          value: 3,
-          max: 10 
-        },
-        {
-          name: "str",
-          value: 10,
-          max: 100
-        }
-      ],
-      inventory: [],
-      currency: 233
-    }
-    await axios.post("/addPlayer", character)
-    .then(response => {
-      console.log(response.data)
-    })
-    .catch(error => {
-      console.log(error)
-    })
-  }
-
   function JoinRoom() {
     adventure.players.push(userId);
     axios
       .post(`/joinAdventure/${id}`, { playerId: userId })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
       });
   }
 
   async function getCharacters(id) {
     await axios.get(`/getPlayerByAdventure/${id}`).then((response) => {
       setCharacters(response.data.data);
-      console.log(response.data.data)
+      // console.log(response.data.data)
+
+      checkUserChar(response.data.data);
     });
   }
 
@@ -87,6 +62,7 @@ export default function Lobby(props) {
   const addCharacter = (newCharacter) => {
     const characterCopy = [...characters];
     characterCopy.push(newCharacter);
+    setCurrentUserChar(newCharacter)
 
     setCharacters(characterCopy);
   };
@@ -115,19 +91,19 @@ export default function Lobby(props) {
   useEffect(() => {
     if (socket) {
       socket.on("roomJoined", (msg) => {
-        console.log(msg);
+        // console.log(msg);
         for(let i = 0; i < characters.length; i++){
           if(characters[i]._id != msg.user._id){
             characters.push(msg.user)
           }
         }
         
-        console.log(characters)
+        // console.log(characters)
       });
     }
   }, [socket]);
   const playersList = characters.map((player) => {
-    console.log(player)
+    // console.log(player)
     return (
       <>
         <div className="col-6 mt-2 d-flex justify-content-center">
@@ -153,6 +129,34 @@ export default function Lobby(props) {
     );
   });
 
+  function checkUserChar(chars) {
+    chars.map(element => {
+
+      if(element.userId == userId){
+        setCurrentUserChar(element)
+      }
+    });
+  }
+
+  const dialogRendered = () => {
+    if(!currentUserChar){
+      return(
+        <CreateCharacterPopUp
+          handleClose={handleClose}
+          addCharacter={addCharacter}
+          adventureId={adventure._id}
+        ></CreateCharacterPopUp>
+      )
+    }
+
+    return (
+        <CharacterInfosPopUp
+          handleClose={handleClose}
+          character={currentUserChar}
+        ></CharacterInfosPopUp>
+    )
+  }
+
   return (
     <div className="container">
       <div className="row card  mt-3">
@@ -161,10 +165,7 @@ export default function Lobby(props) {
           <span>{adventure.name}</span>
           <div>
             <Button size="lg" onClick={() => handleOpen()}>
-              Créer
-            </Button>
-            <Button size="lg" onClick={() => createCharacter()}>
-              Créer
+              {currentUserChar ? "Fiche personnage" : "Créer mon personnage"}
             </Button>
           </div>
         </div>
@@ -205,11 +206,7 @@ export default function Lobby(props) {
         </div>
       </div>
       <Dialog open={open} onClose={handleClose} fullWidth>
-        <CreateCharacterPopUp
-          handleClose={handleClose}
-          addCharacter={addCharacter}
-          adventureId={adventure._id}
-        ></CreateCharacterPopUp>
+        {dialogRendered()}
       </Dialog>
     </div>
   );
