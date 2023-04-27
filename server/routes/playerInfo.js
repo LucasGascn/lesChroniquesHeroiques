@@ -4,12 +4,12 @@ module.exports = (app, mongoose) => {
 
   app.post("/addplayer", async (req, res) => {
     const character = req.body;
-    console.log(character)
+    console.log(character);
     try {
       await Character.create(character);
       res.send({ status: "ok", character: character });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       res.status(500).send({ status: error });
     }
   });
@@ -37,13 +37,13 @@ module.exports = (app, mongoose) => {
 
   app.get("/getPlayerByAdventure/:id", async (req, res) => {
     const adventureId = req.params.id;
-
     const characters = await Character.find({ adventureId: adventureId });
     if (characters) {
       return res.send({ data: characters });
-    }
-    else{
-      return res.send({ status_message: "Aucun héro n'est affilié à cette aventure"});
+    } else {
+      return res.send({
+        status_message: "Aucun héro n'est affilié à cette aventure",
+      });
     }
   });
 };

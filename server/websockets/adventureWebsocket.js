@@ -18,16 +18,15 @@ module.exports = (mongoose, io, app) => {
   });
 
   const charWatcher = Character.watch();
-  charWatcher.on("change", (change) => {
+  charWatcher.on("change", async (change) => {
     if (change.operationType == "insert") {
-      console.log(change.fullDocument);
-      console.log(io.of("/game").adapter.rooms);
-      console.log(
-        io
-          .of("/game")
-          .to(change.fullDocument.adventureId.toString())
-          .emit("newCharacter", "new character added")
-      );
+      const characters = await Character.find({
+        adventureId: change.fullDocument.adventureId,
+      });
+
+      io.of("/game")
+        .to(change.fullDocument.adventureId.toString())
+        .emit("newCharacter", characters);
     }
   });
 
@@ -48,15 +47,18 @@ module.exports = (mongoose, io, app) => {
 
       io.of("/game")
         .to(adventureId)
-        .emit("roomJoined",{ message: `${user.fname} a join la room`, user: user});
+        .emit("roomJoined", {
+          message: `${user.fname} a join la room`,
+          user: user,
+        });
     }
     if (!adventure.players.includes(playerId)) {
       adventure.players.push(playerId);
 
       adventure.save();
-      res.send({stats_message: "Bien ajouté", user: user});
+      res.send({ stats_message: "Bien ajouté", user: user });
     } else {
-      res.send({status_message: "déjà dans l'aventure", user: user });
+      res.send({ status_message: "déjà dans l'aventure", user: user });
     }
   });
   gameNamespace.on("connection", async (socket) => {

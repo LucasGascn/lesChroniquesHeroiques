@@ -3,10 +3,9 @@ import io, { Manager } from "socket.io-client";
 import axios from "axios";
 import { useEffect, useState, useRef, useContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
-import CreateCharacterPopUp from './createCharacterPopUp'
-import CharacterInfosPopUp from './characterInfosPopUp'
+import CreateCharacterPopUp from "./createCharacterPopUp";
+import CharacterInfosPopUp from "./characterInfosPopUp";
 import Dialog from "@mui/material/Dialog";
-
 
 export default function Lobby(props) {
   const queryParameters = new URLSearchParams(window.location.search);
@@ -62,7 +61,7 @@ export default function Lobby(props) {
   const addCharacter = (newCharacter) => {
     const characterCopy = [...characters];
     characterCopy.push(newCharacter);
-    setCurrentUserChar(newCharacter)
+    setCurrentUserChar(newCharacter);
 
     setCharacters(characterCopy);
   };
@@ -92,28 +91,31 @@ export default function Lobby(props) {
     if (socket) {
       socket.on("roomJoined", (msg) => {
         // console.log(msg);
-        for(let i = 0; i < characters.length; i++){
-          if(characters[i]._id != msg.user._id){
-            characters.push(msg.user)
+        for (let i = 0; i < characters.length; i++) {
+          if (characters[i]._id != msg.user._id) {
+            //characters.push(msg.user);
           }
         }
-        
+
         // console.log(characters)
       });
       socket.on("UpdateAdventure", (msg) => {
-        console.log(msg);
+        setAdventure(msg);
       });
       socket.on("newCharacter", (msg) => {
+        setCharacters(msg);
         console.log(msg);
       });
-      console.log(socket);
     }
   }, [socket]);
   const playersList = characters.map((player) => {
     // console.log(player)
     return (
       <>
-        <div className="col-6 mt-2 d-flex justify-content-center">
+        <div
+          className="col-6 mt-2 d-flex justify-content-center"
+          key={player._id}
+        >
           <div className="col-11 card">
             <div className="mx-1 d-flex justify-content-around">
               <span>{player.name}</span>
@@ -137,32 +139,31 @@ export default function Lobby(props) {
   });
 
   function checkUserChar(chars) {
-    chars.map(element => {
-
-      if(element.userId == userId){
-        setCurrentUserChar(element)
+    chars.map((element) => {
+      if (element.userId == userId) {
+        setCurrentUserChar(element);
       }
     });
   }
 
   const dialogRendered = () => {
-    if(!currentUserChar){
-      return(
+    if (!currentUserChar) {
+      return (
         <CreateCharacterPopUp
           handleClose={handleClose}
           addCharacter={addCharacter}
           adventureId={adventure._id}
         ></CreateCharacterPopUp>
-      )
+      );
     }
 
     return (
-        <CharacterInfosPopUp
-          handleClose={handleClose}
-          character={currentUserChar}
-        ></CharacterInfosPopUp>
-    )
-  }
+      <CharacterInfosPopUp
+        handleClose={handleClose}
+        character={currentUserChar}
+      ></CharacterInfosPopUp>
+    );
+  };
 
   return (
     <div className="container">
