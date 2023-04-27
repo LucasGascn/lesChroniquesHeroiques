@@ -35,11 +35,23 @@ function AdventureQuests(){
         getAdventure() 
     }, []);
 
-    function toggleLock() {
-        setLock(lock === 'none' ? 'flex' : 'none');
-        setOpen(open === 'none' ? 'flex' : 'none');
-        console.log(adventure);
-    }
+    async function toggleLock(index) {
+      setLock(lock === 'none' ? 'flex' : 'none');
+      setOpen(open === 'none' ? 'flex' : 'none');
+      if(open === "flex") {
+          adventure.quests[index].status = "unlock";
+      }
+      else {
+          adventure.quests[index].status = "lock";
+      }
+      
+      console.log(adventure.quests);
+      
+      const updateQuestUrl = "/updateAdventure/643fadc533751688af13a15e";
+      await axios.post(updateQuestUrl, adventure)
+          .then(res => console.log(res))
+          .catch(error => console.log(error));
+  }
     if(!adventure.gameMaster && quests.status =='open'){
         return(
             <div>
@@ -59,9 +71,8 @@ function AdventureQuests(){
                 <div key={index}>
                 <h2>{quest.nom} {quest.recompense}</h2>
                     <p>{quest.description}</p>
-                    <button onClick={toggleLock} style={{display: open}}><img className="closeLock" src={cadenas} alt="cadenas fermé"></img></button>
-                    <button onClick={toggleLock} style={{display: lock}}><img className="openLock" src={cadenasOpen} alt="cadenas ouvert"></img></button>
-
+                    <button onClick={() => toggleLock(index)} style={{display: open}}><img className="closeLock" src={cadenas} alt="cadenas fermé"></img></button>
+                    <button onClick={() => toggleLock(index)} style={{display: lock}}><img className="openLock" src={cadenasOpen} alt="cadenas ouvert"></img></button>
                 </div>
             ))}
         </>
