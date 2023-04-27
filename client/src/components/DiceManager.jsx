@@ -1,4 +1,4 @@
-import {  useState } from "react"
+import {  useEffect, useState } from "react"
 
 const DiceManager = () =>{
 let dices = [
@@ -11,7 +11,6 @@ let dices = [
 ]
 
 const [messages, setMessages]=useState([])
-let messagesTab = []
 
 const rollDice = (value)=>{
     let min = 1
@@ -20,16 +19,12 @@ const rollDice = (value)=>{
     diceValue = Math.round(diceValue)
     
     let message = 'vous faites un ' + diceValue
-    console.log(message)
-    messagesTab.push(message)
-    setMessages(messagesTab)
+    setMessages([message, ...messages])
+    console.log(messages)
+
 }
 
-let messagesList = messages.map((message)=>{
-    return(
-        <p>{message}</p>
-    )
-})
+
 
 let diceList = dices.map((dice)=>{
     return(
@@ -41,7 +36,12 @@ return (
     <>
     <div className="dtContainer">
     <div className="diceHolder">{diceList}</div>
-    <div className="diceTextBox">{messagesList}</div>
+    <div className="diceTextBox">
+        {messages.map((message)=>{
+            return(
+                <p>{message}</p>      
+                )
+    })}</div>
     <div></div>
     </div>
     </>
