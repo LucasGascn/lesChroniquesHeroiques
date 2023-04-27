@@ -1,0 +1,4 @@
+.hexDiceContainer{
+    display: flex;
+    flex-direction: row;
+}

@@ -16,6 +16,7 @@ import { RGBELoader, OrbitControls} from 'three-stdlib'
 import { mergeBufferGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils'
 import { SimplexNoise } from "simplex-noise"
 
+
 const Hexmap = () => {
     const mount = useRef(null)
     // const [reactScene, setReactScene] = useState()

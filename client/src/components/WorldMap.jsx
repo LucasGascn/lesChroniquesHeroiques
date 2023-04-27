@@ -130,9 +130,6 @@ const WorldMap = () =>{
             light.shadow.camera.near = 0.5
             light.shadow.camera.far = 500
 
-
-
-
             const uniforms = {
                 color: { value: new Color(0x32a5c9) },
                 heightMap: { value : heightmap }, // displacementMap
@@ -174,11 +171,6 @@ const WorldMap = () =>{
             })
 
             makePlane() // creates a plane and a merge the plane with a central boxGeometry(0,0,0)
-                    // let planeShader = new Mesh(planeGeometries,shader)
-
-            
-
-            
             let mapColor = new Color(0x42974a)
 
             let planeMesh = new Mesh(planeGeometries,
@@ -269,6 +261,7 @@ const WorldMap = () =>{
                 onClick(e) {
                     navigate("/hexmap",{replace: true})
                     window.removeEventListener("click",(e))
+                    window.removeEventListener("pointermove",(e))
                 }
 
                 onPointerOver(e){

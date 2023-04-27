@@ -1,0 +1,6 @@
+#diceListContainer{
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    display: flex;
+}

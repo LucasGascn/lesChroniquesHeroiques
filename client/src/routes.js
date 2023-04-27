@@ -8,6 +8,8 @@ import WorldMap from "./components/WorldMap";
 import Player from "./pages/player/player";
 import Adventure from "./pages/adventure/adventure";
 import Lobby from "./pages/lobby/lobby";
+// import DiceTray from "./components/DiceTray";
+import DiceManager from "./components/DiceManager";
 
 function RoutesProvider() {
   return (
@@ -23,6 +25,7 @@ function RoutesProvider() {
         <Route path="/player" element={<Player />} />
         <Route path="/adventure" element={<Adventure />} />
         <Route path="/lobby" element={<Lobby />} />
+        <Route path="/dice" element={<DiceManager/>} />
       </Routes>
     </BrowserRouter>
   );
