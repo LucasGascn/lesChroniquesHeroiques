@@ -32,6 +32,7 @@
     "threejs-dice": "^1.1.0",
     "threex-domevents": "^1.0.0",
     "threex.domevents": "^1.0.1",
+    "three-stdlib": "^2.21.9",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

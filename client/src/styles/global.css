@@ -52,15 +52,13 @@ body {
 }
 
 .home__aventures {
-  display: grid;
   grid-template-columns: repeat(3, 1fr);
 }
 
-.home__aventures>div {
+.home__aventures > div {
   background-color: var(--bs-secondary);
   margin: 2px 0;
   padding: 7px 20px;
-
 }
 
 .home__save__card-body {
@@ -74,13 +72,11 @@ body {
   padding: 7px 20px;
   border-radius: 0.5rem 0.5rem 0 0;
   margin-bottom: 5px;
-
 }
 
 .home__saves {
   margin: 40px;
 }
-
 
 .home__desc {
   height: 400px;
@@ -88,7 +84,8 @@ body {
   flex-direction: column;
 }
 
-#home__desc__1, #home__desc__2 {
+#home__desc__1,
+#home__desc__2 {
   width: 70%;
   background-color: var(--bs-secondary);
   margin: 10px;
@@ -96,7 +93,7 @@ body {
   border-radius: 0.5rem;
 }
 
-#home__desc__2{
+#home__desc__2 {
   align-self: flex-end;
   animation-direction: normal;
 }
