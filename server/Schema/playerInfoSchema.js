@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 const playerInfoSchema = mongoose.Schema(
   {
-    user: mongoose.Schema.Types.ObjectId,
+    userId: { type: mongoose.Schema.Types.ObjectId, res:"Users" },
+    adventureId: { type: mongoose.Schema.Types.ObjectId, ref: "Adventure" },
     name: String,
-    adventure: mongoose.Schema.Types.ObjectId,
+    job: String,
     stats: [],
     inventory: [],
     currency: Number,

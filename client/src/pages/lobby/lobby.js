@@ -3,6 +3,9 @@ import io, { Manager } from "socket.io-client";
 import axios from "axios";
 import { useEffect, useState, useRef, useContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
+import CreateCharacterPopUp from './createCharacterPopUp'
+import Dialog from "@mui/material/Dialog";
+
 
 export default function Lobby(props) {
   const queryParameters = new URLSearchParams(window.location.search);
@@ -11,6 +14,7 @@ export default function Lobby(props) {
 
   const [adventure, setAdventure] = useState({});
   const [characters, setCharacters] = useState([]);
+  const [open, setOpen] = useState(false);
   const userId = JSON.parse(localStorage.getItem("user")).user._id;
   const [socket, setSocket] = useState();
 
@@ -26,6 +30,36 @@ export default function Lobby(props) {
     });
   }
 
+  async function createCharacter(){
+    let character= {
+      name: "bidule",
+      job: "le vrai orc raciste",
+      userId: userId,
+      adventureId: id,
+      stats: [
+        {
+          name: "hp",
+          value: 3,
+          max: 10 
+        },
+        {
+          name: "str",
+          value: 10,
+          max: 100
+        }
+      ],
+      inventory: [],
+      currency: 233
+    }
+    await axios.post("/addPlayer", character)
+    .then(response => {
+      console.log(response.data)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  }
+
   function JoinRoom() {
     adventure.players.push(userId);
     axios
@@ -38,8 +72,24 @@ export default function Lobby(props) {
   async function getCharacters(id) {
     await axios.get(`/getPlayerByAdventure/${id}`).then((response) => {
       setCharacters(response.data.data);
+      console.log(response.data.data)
     });
   }
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const addCharacter = (newCharacter) => {
+    const characterCopy = [...characters];
+    characterCopy.push(newCharacter);
+
+    setCharacters(characterCopy);
+  };
 
   useEffect(function () {
     setSocket(
@@ -66,17 +116,25 @@ export default function Lobby(props) {
     if (socket) {
       socket.on("roomJoined", (msg) => {
         console.log(msg);
+        for(let i = 0; i < characters.length; i++){
+          if(characters[i]._id != msg.user._id){
+            characters.push(msg.user)
+          }
+        }
+        
+        console.log(characters)
       });
     }
   }, [socket]);
   const playersList = characters.map((player) => {
+    console.log(player)
     return (
       <>
         <div className="col-6 mt-2 d-flex justify-content-center">
           <div className="col-11 card">
             <div className="mx-1 d-flex justify-content-around">
               <span>{player.name}</span>
-              <span>{player.class}</span>
+              <span>{player.job}</span>
             </div>
             <div className="row">
               {player.stats.map((stat) => {
@@ -101,7 +159,14 @@ export default function Lobby(props) {
         <div className="col d-flex justify-content-between align-items-center">
           <Button onClick={() => leaveRoom()}>leave</Button>
           <span>{adventure.name}</span>
-          <Button>create</Button>
+          <div>
+            <Button size="lg" onClick={() => handleOpen()}>
+              Créer
+            </Button>
+            <Button size="lg" onClick={() => createCharacter()}>
+              Créer
+            </Button>
+          </div>
         </div>
       </div>
       <div className="row card mt-3 d-flex flex-column align-items-center">
@@ -139,6 +204,13 @@ export default function Lobby(props) {
           </div>
         </div>
       </div>
+      <Dialog open={open} onClose={handleClose} fullWidth>
+        <CreateCharacterPopUp
+          handleClose={handleClose}
+          addCharacter={addCharacter}
+          adventureId={adventure._id}
+        ></CreateCharacterPopUp>
+      </Dialog>
     </div>
   );
 }

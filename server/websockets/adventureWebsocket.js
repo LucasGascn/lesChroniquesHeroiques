@@ -23,15 +23,15 @@ module.exports = (mongoose, io, app) => {
       }
       io.of("/game")
         .to(adventureId)
-        .emit("roomJoined", `${user.fname} a join la room`);
+        .emit("roomJoined",{ message: `${user.fname} a join la room`, user: user});
     }
     if (!adventure.players.includes(playerId)) {
       adventure.players.push(playerId);
 
       adventure.save();
-      res.send("Bien ajouté");
+      res.send({stats_message: "Bien ajouté", user: user});
     } else {
-      res.send("déjà dans l'aventure");
+      res.send({status_message: "déjà dans l'aventure", user: user });
     }
   });
   gameNamespace.on("connection", async (socket) => {
