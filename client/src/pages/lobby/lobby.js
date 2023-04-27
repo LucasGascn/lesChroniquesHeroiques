@@ -67,6 +67,13 @@ export default function Lobby(props) {
       socket.on("roomJoined", (msg) => {
         console.log(msg);
       });
+      socket.on("UpdateAdventure", (msg) => {
+        console.log(msg);
+      });
+      socket.on("newCharacter", (msg) => {
+        console.log(msg);
+      });
+      console.log(socket);
     }
   }, [socket]);
   const playersList = characters.map((player) => {

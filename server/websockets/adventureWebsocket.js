@@ -1,11 +1,35 @@
 module.exports = (mongoose, io, app) => {
   const { ObjectId } = require("mongodb");
+  const CharacterSchema = require("../Schema/playerInfoSchema");
+  const adventureSchema = require("../Schema/adventureSchema");
+  const userSchema = require("../Schema/userSchema");
 
   const gameNamespace = io.of("/game");
-  const userSchema = require("../Schema/userSchema");
   const User = mongoose.model("Users", userSchema);
-  const adventureSchema = require("../Schema/adventureSchema");
   const Adventure = mongoose.model("Adventure", adventureSchema);
+  const Character = mongoose.model("Characters", CharacterSchema);
+
+  const advWatcher = Adventure.watch();
+  advWatcher.on("change", async (change) => {
+    if (change.operationType == "update") {
+      const adv = await Adventure.findById(change.documentKey._id);
+      io.of("/game").to(adv._id).emit("UpdateAdventure", adv);
+    }
+  });
+
+  const charWatcher = Character.watch();
+  charWatcher.on("change", (change) => {
+    if (change.operationType == "insert") {
+      console.log(change.fullDocument);
+      console.log(io.of("/game").adapter.rooms);
+      console.log(
+        io
+          .of("/game")
+          .to(change.fullDocument.adventureId.toString())
+          .emit("newCharacter", "new character added")
+      );
+    }
+  });
 
   app.post("/joinAdventure/:id", async (req, res) => {
     const adventureId = req.params.id;
@@ -21,6 +45,7 @@ module.exports = (mongoose, io, app) => {
       if (soc) {
         soc.join(adventureId);
       }
+
       io.of("/game")
         .to(adventureId)
         .emit("roomJoined", `${user.fname} a join la room`);
@@ -109,7 +134,7 @@ module.exports = (mongoose, io, app) => {
           await room.save();
           await User.findOneAndUpdate({ _id: player.id }, { roomId: null });
           socket.leave(room._id.toString());
-          socket.disconnect();
+          // socket.disconnect();
           //console.log(`Joueur ${player.fname} a quitté la room ${room.name}`);
           res.send("ok");
         }
