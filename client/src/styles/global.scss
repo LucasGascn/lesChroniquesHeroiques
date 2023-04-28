@@ -12,24 +12,24 @@
   background-color: var(--bs-info);
   height: 60vh;
   width: 60vh;
-  transform: translate(-50%, -50%);
+  transform: translate(-25%, -25%);
 }
 
 @mixin mouseEnter-mj {
   // top: -10%;
-//   left: -50%;
+  // left: 30%;
 }
 
 @mixin mouseEnter-univers {
-  // top: 60%;
-  // left: 0%;
+  top: 0%;
+  left: 0%;
   z-index: 4;
 }
 
 @mixin mouseEnter-aventurier {
   z-index: 4;
-  top: 17%;
-  left: 60%;
+  // top: 17%;
+  // left: 60%;
 }
 
 @mixin mouseEnter-content {
@@ -317,7 +317,7 @@ body {
   }
 }
 
-.bulle__shape4{
+.bulle__shape4 {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -701,10 +701,10 @@ body {
 }
 
 @keyframes bubble-shape-out {
-  0%{
+  0% {
     margin: 5vh 0;
   }
-  50%{
+  50% {
     margin: 5vh 0;
   }
 }
@@ -719,13 +719,13 @@ body {
 }
 
 @keyframes bubble-shape2-out {
-  0%{
+  0% {
     height: 100%;
     width: 100%;
     position: relative;
     margin: 0;
   }
-  50%{
+  50% {
     height: 100%;
     width: 100%;
     position: relative;
@@ -749,19 +749,18 @@ body {
 }
 
 @keyframes bubble-shape3-out {
-  0%{
+  0% {
     height: 100%;
     line-height: 1.25;
     padding: 0;
     text-align: center;
   }
-  50%{
+  50% {
     height: 100%;
     line-height: 1.25;
     padding: 0;
     text-align: center;
   }
-  
 }
 
 @keyframes bubble-shape2-before {
@@ -786,7 +785,7 @@ body {
   0% {
     @include polygones-left();
   }
-  50% {
+  99% {
     @include polygones-left();
   }
 }
@@ -794,7 +793,7 @@ body {
   0% {
     @include polygones-right();
   }
-  50% {
+  99% {
     @include polygones-right();
   }
 }
