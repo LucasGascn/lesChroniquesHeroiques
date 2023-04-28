@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 
+
 function AddQuest() {
   const [questName, setQuestName] = useState('');
   const [questReward, setQuestReward] = useState('');
@@ -20,7 +21,7 @@ function AddQuest() {
       status: 'lock'
     };
     try {
-      await axios.post('/updateAdventure/643fadc533751688af13a15e', { quest: newQuest });
+      await axios.post('/updateAdventure', { quest: newQuest });
       console.log('Une nouvelle quête a été ajoutée');
       // réinitialiser les champs de formulaire
       setQuestName('');

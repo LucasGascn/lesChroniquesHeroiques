@@ -17,7 +17,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function PopUpQuest() {
+function PopUpQuest(props) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -54,7 +54,7 @@ function PopUpQuest() {
         </AppBar>
         <List>
           <ListItem>
-            <AdventureQuests />
+            <AdventureQuests adventure={props.adventure}/>
           </ListItem>
           <Divider />
         </List>

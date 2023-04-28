@@ -11,13 +11,13 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
-import AdventurePnj from '../pnj/pnj';
+import GameMaster from '../mj/gameMaster';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function PopUpPnj(props) {
+export default function PopUpMj(props) {
 
   const [open, setOpen] = React.useState(false);
 
@@ -31,7 +31,7 @@ export default function PopUpPnj(props) {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>PNJ</Button>
+      <Button variant="outlined" onClick={handleClickOpen}>Maître du jeu</Button>
       <Dialog
         fullScreen
         open={open}
@@ -49,13 +49,13 @@ export default function PopUpPnj(props) {
               <CloseIcon />
             </IconButton>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              PNJ
+              La salle sur demande du Maître du jeu
             </Typography>
           </Toolbar>
         </AppBar>
         <List>
           <ListItem>
-            <AdventurePnj adventure={props.adventure}/>
+            <GameMaster adventure={props.adventure}/>
           </ListItem>
           <Divider />
         </List>

@@ -1,36 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import cadenas from '../../assets/images/cadenas.png'
 import cadenasOpen from '../../assets/images/cadenas-ouvert.png'
 import '../../styles/gameMaster.css'
 
-function AdventureQuests(){
+function AdventureQuests(props){
     const [quests, setQuests] = useState([]);
     const [adventure, setAdventure] = useState({})
     const userId = JSON.parse(localStorage.getItem("user")).user._id;
-
-    async function getQuest() {
-      try {
-        const response = await axios.get("/getQuests/64414ea8f0c83651f0ae38c8")
-        setQuests(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  
-    async function getAdventure() {
-      try {
-        const response = await axios.get("/getAdventure/64414ea8f0c83651f0ae38c8")
-        setAdventure(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
+    const dataGet = useRef(true);
     useEffect(() => {
-        getQuest()
-        getAdventure() 
-    }, []);
+      if (dataGet.current){
+        setQuests(props.adventure.quests)
+        setAdventure(props.adventure) 
+        dataGet.current=false
+    }
+  },[]);
+
 
     async function toggleLock(index) {
       const newAdventure = { ...adventure };
@@ -39,7 +25,7 @@ function AdventureQuests(){
 
       const updateQuestUrl = "/updateAdventure/643fadc533751688af13a15e";
       try {
-        const response = await axios.post(updateQuestUrl, newAdventure);
+        const response = await axios.post(updateQuestUrl, {adventure : newAdventure});
         console.log(response);
       } catch (error) {
         console.log(error);

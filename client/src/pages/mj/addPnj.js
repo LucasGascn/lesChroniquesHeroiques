@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 
 
+
 function AddPnj() {
   const [pnjName, setPnjName] = useState('');
   const [pnjSurname, setPnjSurname] = useState('');
@@ -16,7 +17,7 @@ function AddPnj() {
     }
     const newPnj = { nom: pnjName,prenom: pnjSurname,description: pnjDescription,status: 'lock'};
     try {
-      await axios.post(`/updateAdventure/64414ea8f0c83651f0ae38c8`, { pnj: newPnj });
+      await axios.post(`/updateAdventure/`, { pnj: newPnj });
       console.log('Un nouveau PNJ a été ajouté');
       setPnjName('');
       setPnjSurname('');

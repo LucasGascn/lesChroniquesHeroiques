@@ -37,7 +37,7 @@ module.exports = (app, mongoose) => {
     console.log(adventure);
   });
 
-  app.post("/updateAdventure/:id", async (req, res) => {
+  app.post("/:id", async (req, res) => {
     console.log(req.body);
     const adventureId = req.params.id;
     const adventure = req.body.adventure;

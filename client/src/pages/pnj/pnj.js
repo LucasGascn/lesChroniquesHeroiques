@@ -1,48 +1,31 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import cadenas from '../../assets/images/cadenas.png'
 import cadenasOpen from '../../assets/images/cadenas-ouvert.png'
 import '../../styles/gameMaster.css'
 
-function AdventurePnj(){
+function AdventurePnj(props){
     const [pnjs, setPnjs] = useState([]);
     const [adventure, setAdventure] = useState({})
     const userId = JSON.parse(localStorage.getItem("user")).user._id;
-
-    async function getPnj() {
-      await axios.get("/getPnjs/64414ea8f0c83651f0ae38c8")
-        .then((res) => {
-          console.log(res.data)
-          setPnjs(res.data);
-          console.log(pnjs);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  
-    async function getAdventure() {
-      try {
-        const response = await axios.get("/getAdventure/64414ea8f0c83651f0ae38c8")
-        setAdventure(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
+    const dataGet = useRef(true);
     useEffect(() => {
-        getPnj()
-        getAdventure() 
+        if (dataGet.current){
+          setPnjs(props.adventure.pnj)
+          setAdventure(props.adventure)
+          dataGet.current=false
+        }
     }, []);
 
     async function toggleLock(index) {
       const newAdventure = { ...adventure };
       newAdventure.pnj[index].status = newAdventure.pnj[index].status === "lock" ? "unlock" : "lock";
+      console.log(newAdventure.pnj[index].status);
       setAdventure(newAdventure);
 
-      const updatePnjUrl = "/updateAdventure/643fadc533751688af13a15e";
+      const updatePnjUrl = "/updateAdventure/"+adventure._id;
       try {
-        const response = await axios.post(updatePnjUrl, newAdventure);
+        const response = await axios.post(updatePnjUrl, {adventure : newAdventure});
         console.log(response);
       } catch (error) {
         console.log(error);

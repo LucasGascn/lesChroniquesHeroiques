@@ -5,6 +5,7 @@ import { useEffect, useState, useRef, useContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import PopUpPnj from './popUpPnj'
 import PopUpQuest from './popUpQuest'
+import PopUpMj from "./popUpMj";
 
 export default function Lobby(props) {
   const queryParameters = new URLSearchParams(window.location.search);
@@ -71,6 +72,7 @@ export default function Lobby(props) {
       });
     }
   }, [socket]);
+  
   const playersList = characters.map((player) => {
     return (
       <>
@@ -100,8 +102,9 @@ export default function Lobby(props) {
   return (
     <div className="container">
       <div style={{display:'flex'}}>
-        <PopUpPnj />
-        <PopUpQuest />
+        <PopUpPnj adventure={adventure}/>
+        <PopUpQuest adventure={adventure}/>
+        <PopUpMj adventure={adventure}/>
       </div>
       
       <div className="row card  mt-3">
