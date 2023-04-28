@@ -6,9 +6,12 @@ function GameMaster(props){
 
     return(
         <>
-            <AddPnj  adventure={props.adventure}/>
-            <AddQuest  adventure={props.adventure}/>
-            <AddClass  adventure={props.adventure}/>
+            <div className="mj__grid">
+                <div className="mj__grid-form" id="div_1"><AddPnj  adventure={props.adventure}/></div>
+                <div className="mj__grid-form" id="div_2"><AddQuest  adventure={props.adventure}/></div>
+                <div className="mj__grid-form" id="div_3"><AddClass  adventure={props.adventure}/></div>
+            </div>
+            
         </>
     )
 }

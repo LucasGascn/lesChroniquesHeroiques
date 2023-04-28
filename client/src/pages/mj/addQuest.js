@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 
 
+
 function AddQuest(props) {
   const [questName, setQuestName] = useState('');
   const [questReward, setQuestReward] = useState('');
@@ -17,13 +18,14 @@ function AddQuest(props) {
     console.log(props.adventure._id);
 
     const newQuest = {
-      name: questName,
-      reward: questReward,
+      nom: questName,
+      recompense: questReward,
       description: questDescription,
       status: 'lock'
     };
     try {
-      await axios.post(`/updateAdventure/`+ props.adventure._id, { adventure: newQuest });
+      props.adventure.quests.push(newQuest)
+      await axios.post(`/updateAdventure/`+ props.adventure._id, { adventure: props.adventure });
       console.log('Une nouvelle quête a été ajoutée');
       // réinitialiser les champs de formulaire
       setQuestName('');
@@ -38,8 +40,8 @@ function AddQuest(props) {
 
   return (
     <>
-      <p>Définissez vos quêtes</p>
-      <form onSubmit={submitQuest}>
+      <h3>Définissez vos quêtes</h3>
+      <form onSubmit={submitQuest} style={{width:'21vw'}}>
         Nom :{' '}
         <input type="text" name="questName" value={questName} onChange={(e) => setQuestName(e.target.value)} />
         Récompense :{' '}

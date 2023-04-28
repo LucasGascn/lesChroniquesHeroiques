@@ -14,7 +14,12 @@ function AddClass(props){
           setError('Veuillez remplir tous les champs');
           return;
         }
-        const newClass = { nomClasse: className,nomState: statName,valeurBase: statBase,statMax: statMax};
+        const newClass = {
+            nomClasse: className,
+            nomState: statName,
+            valeurBase: statBase,
+            statMax: statMax
+        };
         try {
           await axios.post(`/updateAdventure/${props.adventure._id}`, { classe: newClass });
           console.log('Une nouvelle classe a été ajouté');
@@ -31,8 +36,8 @@ function AddClass(props){
 
     return(
     <>
-      <p>Définissez les classes</p>
-      <form onSubmit={submitClass}>
+      <h3>Définissez les classes</h3>
+      <form onSubmit={submitClass} style={{width:'21vw'}}>
         Classe : <input type="text" name="nom" value={className} onChange={(e) => setClassName(e.target.value)} />
         <p>définissez les stats des classes (Vie, Mana, force, etc...)</p>
         Nom de la stats : <input type="text" name="statName" value={statName} onChange={(e) => setStatName(e.target.value)} />

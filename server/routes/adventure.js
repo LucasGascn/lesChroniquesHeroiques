@@ -39,6 +39,7 @@ module.exports = (app, mongoose) => {
 
   app.post("/:id", async (req, res) => {
     console.log(req.body);
+
     const adventureId = req.params.id;
     const adventure = req.body.adventure;
   
@@ -57,7 +58,26 @@ module.exports = (app, mongoose) => {
         res.send({ error });
       });
   });
+  app.post("/updateAdventure/:id", async (req, res) => {
 
+    const adventureId = req.params.id;
+    const adventure = req.body.adventure;
+  
+    const adv = await Adventure.findById(adventureId)
+
+    console.log(adv)
+
+    Adventure.findByIdAndUpdate(adventureId, adventure, {
+      returnDocument: "after",
+    })
+      .then((response) => {
+        res.send(response);
+      })
+      .catch((error) => {
+        console.log(error);
+        res.send({ error });
+      });
+  });
   app.get("/getPnjs/:id", async (req, res) => {
     
     const adventureId = req.params.id;

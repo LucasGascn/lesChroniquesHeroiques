@@ -23,10 +23,9 @@ function AdventurePnj(props){
       console.log(newAdventure.pnj[index].status);
       setAdventure(newAdventure);
 
-      const updatePnjUrl = "/updateAdventure/"+adventure._id;
       try {
-        const response = await axios.post(updatePnjUrl, {adventure : newAdventure});
-        console.log(response);
+        await axios.post(`/updateAdventure/${props.adventure._id}`, { adventure: adventure });
+
       } catch (error) {
         console.log(error);
       }
