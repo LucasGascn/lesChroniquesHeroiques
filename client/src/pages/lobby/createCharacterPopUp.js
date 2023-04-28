@@ -3,9 +3,8 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { Alert, Collapse } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
@@ -25,20 +24,21 @@ export default function CreateCharacterPopUp(props) {
 
   const classes = props.adventure.classes;
 
+
   const [characterClass, setCharacterClass] = React.useState("");
   const [className, setClassName] = React.useState("");
 
   const handleChange = (event) => {
-    let charClass = classes.filter((element) => element.name == event);
+    let charClass = classes.filter((element) => element.name === event);
 
     setCharacterClass(charClass[0]);
     setClassName(event);
   };
 
   const submitForm = () => {
-    if (name == null || name == "") {
+    if (name === null || name === "") {
       setErrorName(true);
-    } else if (characterClass.name == null || characterClass.name == "") {
+    } else if (characterClass.name === null || characterClass.name === "") {
       setErrorClass(true);
     } else {
       const character = {
