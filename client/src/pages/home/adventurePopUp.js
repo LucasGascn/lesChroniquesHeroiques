@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { Alert, Collapse } from "@mui/material";
 
@@ -22,11 +22,11 @@ export default function AdventurePopUp(props) {
   const userId = JSON.parse(localStorage.getItem("user")).user._id;
 
   const submitForm = () => {
-    if (name == null || name == "") {
+    if (name === null || name === "") {
       setErrorName(true);
-    } else if (desc == null || desc == "") {
+    } else if (desc === null || desc === "") {
       setErrorDesc(true);
-    } else if (size == null || size == "") {
+    } else if (size === null || size === "") {
       setErrorSize(true);
     } else {
       const adventure = {

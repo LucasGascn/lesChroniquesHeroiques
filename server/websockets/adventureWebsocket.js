@@ -23,7 +23,6 @@ module.exports = (mongoose, io, app) => {
       const characters = await Character.find({
         adventureId: change.fullDocument.adventureId,
       });
-
       io.of("/game")
         .to(change.fullDocument.adventureId.toString())
         .emit("newCharacter", characters);
@@ -60,6 +59,11 @@ module.exports = (mongoose, io, app) => {
     } else {
       res.send({ status_message: "déjà dans l'aventure", user: user });
     }
+  });
+
+  app.post("/launchGame/:id", async (req) => {
+    const adventureId = req.params.id;
+    io.of("/game").to(adventureId).emit("launchGame", adventureId);
   });
   gameNamespace.on("connection", async (socket) => {
     const userId = socket.handshake.query.userId;
