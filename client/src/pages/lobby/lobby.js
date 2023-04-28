@@ -4,14 +4,13 @@ import axios from "axios";
 import { useEffect, useState, useRef, useContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 
-import PopUpPnj from './popUpPnj'
-import PopUpQuest from './popUpQuest'
+import PopUpPnj from "./popUpPnj";
+import PopUpQuest from "./popUpQuest";
 import PopUpMj from "./popUpMj";
 
 import CreateCharacterPopUp from "./createCharacterPopUp";
 import CharacterInfosPopUp from "./characterInfosPopUp";
 import Dialog from "@mui/material/Dialog";
-
 
 export default function Lobby(props) {
   const queryParameters = new URLSearchParams(window.location.search);
@@ -114,7 +113,7 @@ export default function Lobby(props) {
       });
     }
   }, [socket]);
-  
+
   const playersList = characters.map((player) => {
     // console.log(player)
     return (
@@ -160,6 +159,7 @@ export default function Lobby(props) {
           handleClose={handleClose}
           addCharacter={addCharacter}
           adventureId={adventure._id}
+          adventure={adventure}
         ></CreateCharacterPopUp>
       );
     }
@@ -174,12 +174,12 @@ export default function Lobby(props) {
 
   return (
     <div className="container">
-      <div className="container__popup-buttons" color="primary" >
-        <PopUpPnj adventure={adventure}/>
-        <PopUpQuest adventure={adventure}/>
-        <PopUpMj adventure={adventure}/>
+      <div className="container__popup-buttons" color="primary">
+        <PopUpPnj adventure={adventure} />
+        <PopUpQuest adventure={adventure} />
+        <PopUpMj adventure={adventure} />
       </div>
-      
+
       <div className="row card  mt-3">
         <div className="col d-flex justify-content-between align-items-center">
           <Button onClick={() => leaveRoom()}>leave</Button>
