@@ -12,6 +12,10 @@ import AdventurePnj from "./pages/pnj/pnj";
 import AdventureQuests from "./pages/quest/quest";
 import Hexmap from "./components/Hexmap";
 import WorldMap from "./components/WorldMap";
+// import DiceTray from "./components/DiceTray";
+import DiceManager from "./components/DiceManager";
+
+
 function RoutesProvider() {
   return (
     <BrowserRouter>
@@ -30,6 +34,7 @@ function RoutesProvider() {
         <Route path="/quest" element={<AdventureQuests />}/>
         <Route path="/hexmap" element={<Hexmap />} />
         <Route path="/world" element={<WorldMap/>} />
+        <Route path="/dice" element={<DiceManager/>} />
       </Routes>
     </BrowserRouter>
   );

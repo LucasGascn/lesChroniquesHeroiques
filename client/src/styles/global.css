@@ -1,5 +1,7 @@
 @import "./nav.css";
 @import "./parallax.css";
+@import "./hex.css";
+@import "./dice.css";
 
 body {
   margin: 0;

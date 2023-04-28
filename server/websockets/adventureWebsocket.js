@@ -1,11 +1,34 @@
 module.exports = (mongoose, io, app) => {
   const { ObjectId } = require("mongodb");
+  const CharacterSchema = require("../Schema/playerInfoSchema");
+  const adventureSchema = require("../Schema/adventureSchema");
+  const userSchema = require("../Schema/userSchema");
 
   const gameNamespace = io.of("/game");
-  const userSchema = require("../Schema/userSchema");
   const User = mongoose.model("Users", userSchema);
-  const adventureSchema = require("../Schema/adventureSchema");
   const Adventure = mongoose.model("Adventure", adventureSchema);
+  const Character = mongoose.model("Characters", CharacterSchema);
+
+  const advWatcher = Adventure.watch();
+  advWatcher.on("change", async (change) => {
+    if (change.operationType == "update") {
+      const adv = await Adventure.findById(change.documentKey._id);
+      io.of("/game").to(adv._id).emit("UpdateAdventure", adv);
+    }
+  });
+
+  const charWatcher = Character.watch();
+  charWatcher.on("change", async (change) => {
+    if (change.operationType == "insert") {
+      const characters = await Character.find({
+        adventureId: change.fullDocument.adventureId,
+      });
+
+      io.of("/game")
+        .to(change.fullDocument.adventureId.toString())
+        .emit("newCharacter", characters);
+    }
+  });
 
   app.post("/joinAdventure/:id", async (req, res) => {
     const adventureId = req.params.id;
@@ -21,17 +44,21 @@ module.exports = (mongoose, io, app) => {
       if (soc) {
         soc.join(adventureId);
       }
+
       io.of("/game")
         .to(adventureId)
-        .emit("roomJoined", `${user.fname} a join la room`);
+        .emit("roomJoined", {
+          message: `${user.fname} a join la room`,
+          user: user,
+        });
     }
     if (!adventure.players.includes(playerId)) {
       adventure.players.push(playerId);
 
       adventure.save();
-      res.send("Bien ajouté");
+      res.send({ stats_message: "Bien ajouté", user: user });
     } else {
-      res.send("déjà dans l'aventure");
+      res.send({ status_message: "déjà dans l'aventure", user: user });
     }
   });
   gameNamespace.on("connection", async (socket) => {
@@ -109,7 +136,7 @@ module.exports = (mongoose, io, app) => {
           await room.save();
           await User.findOneAndUpdate({ _id: player.id }, { roomId: null });
           socket.leave(room._id.toString());
-          socket.disconnect();
+          // socket.disconnect();
           //console.log(`Joueur ${player.fname} a quitté la room ${room.name}`);
           res.send("ok");
         }

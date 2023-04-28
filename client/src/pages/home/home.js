@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import Dialog from "@mui/material/Dialog";
 import AdventurePopUp from "./adventurePopUp";
 
-
 const listAventures = [{
     name: "Aventure1",
     date: "05/02",
@@ -41,8 +40,17 @@ const Home = ({ ...props }) => {
   const getAdventures = async () => {
     await axios.get("/getAdventures").then((response) => {
       const adventure = response.data;
+
       setContinueAdv(adventure.filter((adv) => adv.players.includes(userId)));
-      setJoinAdv(adventure.filter((adv) => !adv.players.includes(userId)));
+      const joinAdvCopy = adventure.filter(
+        (adv) => !adv.players.includes(userId)
+      );
+      joinAdvCopy.forEach((adv) => {
+        if (adv.players.length >= adv.size) {
+          joinAdvCopy.splice(joinAdvCopy.indexOf(adv), 1);
+        }
+      });
+      setJoinAdv(joinAdvCopy);
     });
   };
 
@@ -71,16 +79,7 @@ const Home = ({ ...props }) => {
     <div className="home__content">
       <p id="home__title">Lancez vous dans une nouvelle aventure !</p>
       <div className="home__start">
-        <div className="home__start__buttons">
-          <Button
-            size="lg"
-            onClick={() => {
-              console.log(continueAdv);
-              console.log(joinAdv);
-            }}
-          >
-            Rejoindre
-          </Button>
+        <div>
           <Button size="lg" onClick={() => handleOpen()}>
             Créer
           </Button>

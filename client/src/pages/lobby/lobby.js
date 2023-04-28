@@ -3,9 +3,15 @@ import io, { Manager } from "socket.io-client";
 import axios from "axios";
 import { useEffect, useState, useRef, useContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
+
 import PopUpPnj from './popUpPnj'
 import PopUpQuest from './popUpQuest'
 import PopUpMj from "./popUpMj";
+
+import CreateCharacterPopUp from "./createCharacterPopUp";
+import CharacterInfosPopUp from "./characterInfosPopUp";
+import Dialog from "@mui/material/Dialog";
+
 
 export default function Lobby(props) {
   const queryParameters = new URLSearchParams(window.location.search);
@@ -14,6 +20,9 @@ export default function Lobby(props) {
 
   const [adventure, setAdventure] = useState({});
   const [characters, setCharacters] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [currentUserChar, setCurrentUserChar] = useState(false);
+
   const userId = JSON.parse(localStorage.getItem("user")).user._id;
   const [socket, setSocket] = useState();
 
@@ -34,15 +43,34 @@ export default function Lobby(props) {
     axios
       .post(`/joinAdventure/${id}`, { playerId: userId })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
       });
   }
 
   async function getCharacters(id) {
     await axios.get(`/getPlayerByAdventure/${id}`).then((response) => {
       setCharacters(response.data.data);
+      // console.log(response.data.data)
+
+      checkUserChar(response.data.data);
     });
   }
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const addCharacter = (newCharacter) => {
+    const characterCopy = [...characters];
+    characterCopy.push(newCharacter);
+    setCurrentUserChar(newCharacter);
+
+    setCharacters(characterCopy);
+  };
 
   useEffect(function () {
     setSocket(
@@ -68,19 +96,37 @@ export default function Lobby(props) {
   useEffect(() => {
     if (socket) {
       socket.on("roomJoined", (msg) => {
+        // console.log(msg);
+        for (let i = 0; i < characters.length; i++) {
+          if (characters[i]._id != msg.user._id) {
+            //characters.push(msg.user);
+          }
+        }
+
+        // console.log(characters)
+      });
+      socket.on("UpdateAdventure", (msg) => {
+        setAdventure(msg);
+      });
+      socket.on("newCharacter", (msg) => {
+        setCharacters(msg);
         console.log(msg);
       });
     }
   }, [socket]);
   
   const playersList = characters.map((player) => {
+    // console.log(player)
     return (
       <>
-        <div className="col-6 mt-2 d-flex justify-content-center">
+        <div
+          className="col-6 mt-2 d-flex justify-content-center"
+          key={player._id}
+        >
           <div className="col-11 card">
             <div className="mx-1 d-flex justify-content-around">
               <span>{player.name}</span>
-              <span>{player.class}</span>
+              <span>{player.job}</span>
             </div>
             <div className="row">
               {player.stats.map((stat) => {
@@ -99,6 +145,33 @@ export default function Lobby(props) {
     );
   });
 
+  function checkUserChar(chars) {
+    chars.map((element) => {
+      if (element.userId == userId) {
+        setCurrentUserChar(element);
+      }
+    });
+  }
+
+  const dialogRendered = () => {
+    if (!currentUserChar) {
+      return (
+        <CreateCharacterPopUp
+          handleClose={handleClose}
+          addCharacter={addCharacter}
+          adventureId={adventure._id}
+        ></CreateCharacterPopUp>
+      );
+    }
+
+    return (
+      <CharacterInfosPopUp
+        handleClose={handleClose}
+        character={currentUserChar}
+      ></CharacterInfosPopUp>
+    );
+  };
+
   return (
     <div className="container">
       <div style={{display:'flex'}}>
@@ -111,7 +184,11 @@ export default function Lobby(props) {
         <div className="col d-flex justify-content-between align-items-center">
           <Button onClick={() => leaveRoom()}>leave</Button>
           <span>{adventure.name}</span>
-          <Button>create</Button>
+          <div>
+            <Button size="lg" onClick={() => handleOpen()}>
+              {currentUserChar ? "Fiche personnage" : "Créer mon personnage"}
+            </Button>
+          </div>
         </div>
       </div>
       <div className="row card mt-3 d-flex flex-column align-items-center">
@@ -149,6 +226,9 @@ export default function Lobby(props) {
           </div>
         </div>
       </div>
+      <Dialog open={open} onClose={handleClose} fullWidth>
+        {dialogRendered()}
+      </Dialog>
     </div>
   );
 }
