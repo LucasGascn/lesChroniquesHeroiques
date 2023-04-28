@@ -16,7 +16,7 @@ import { RGBELoader, OrbitControls} from 'three-stdlib'
 import { mergeBufferGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils'
 import { SimplexNoise } from "simplex-noise"
 import DiceManager from "./DiceManager"
-import { Button } from "@mui/material";
+import Button from "react-bootstrap/Button"
 import axios from 'axios'
 import { useLocation } from "react-router-dom";
 
@@ -67,7 +67,7 @@ const Hexmap = () => {
             let sandGeo = new BoxGeometry(0,0,0)
     
         
-            const camera = new PerspectiveCamera(45, windowSize.current[0] / windowSize.current[1], 0.1, 1000)
+            const camera = new PerspectiveCamera(50, windowSize.current[0] / windowSize.current[1], 0.1, 1000)
             camera.position.set(-17,31,33);
             // camera.position.set(0,0,50);
         
@@ -322,9 +322,9 @@ const Hexmap = () => {
 
     return(
         <>
-            <button className='nextQuest' onClick={() => launchGame()}>
+            <Button className='nextQuest' onClick={() => launchGame()}>
                 Prochaine quête
-            </button>
+            </Button>
             <div>
                 <DiceManager></DiceManager>
             </div>

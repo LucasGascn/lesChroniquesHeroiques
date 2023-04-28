@@ -244,7 +244,7 @@ const WorldMap = () => {
         }
 
         onClick(e) {
-          navigate("/hexmap", { state : { replace: true, adventureId: adventureId }});
+          navigate("/hexmap", { state : { adventureId: adventureId }}, {replace: true});
           window.removeEventListener("click", e);
           window.removeEventListener("pointermove", e);
         }

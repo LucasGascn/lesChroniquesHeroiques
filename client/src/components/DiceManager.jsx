@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Button from 'react-bootstrap/Button'
 
 const DiceManager = () => {
   let dices = [
@@ -25,13 +26,16 @@ const DiceManager = () => {
 
   let diceList = dices.map((dice) => {
     return (
-      <button
+      <Button
+        
         onClick={() => {
           rollDice(dice.value);
         }}
       >
-        {dice.dice}
-      </button>
+        <span className="diceBtnText">
+          {dice.dice}
+        </span>
+      </Button>
     );
   });
 
