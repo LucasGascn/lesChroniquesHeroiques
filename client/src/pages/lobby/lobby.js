@@ -103,7 +103,7 @@ export default function Lobby(props) {
         console.log(msg);
       });
       socket.on("launchGame", (msg) => {
-        navigate("/world", { state: { adventureId : msg}});
+        navigate("/world", { state: { adventureId: msg } });
       });
     }
   }, [socket]);
@@ -168,17 +168,14 @@ export default function Lobby(props) {
 
   return (
     <div className="container">
-<<<<<<< HEAD
-      <div className="container__popup-buttons" >
-        <PopUpPnj adventure={adventure}/>
-        <PopUpQuest adventure={adventure}/>
-        <PopUpMj adventure={adventure}/>
-=======
       <div className="container__popup-buttons" color="primary">
         <PopUpPnj adventure={adventure} />
         <PopUpQuest adventure={adventure} />
-        <PopUpMj adventure={adventure} />
->>>>>>> 6b58917906b9d46bb35de026ec63fab9c35176b4
+        {adventure.gameMaster == userId ? (
+          <PopUpMj adventure={adventure} />
+        ) : (
+          ""
+        )}
       </div>
 
       <div className="row card  mt-3">
@@ -205,17 +202,9 @@ export default function Lobby(props) {
         </div>
       </div>
       <div className="row mt-3 d-flex justify-content-between">
-        <div className="col-9 card h-50 p-2">
+        <div className="col-12 card h-50 p-2">
           <div className="row d-flex justify-content-between p-2">
             {playersList}
-          </div>
-        </div>
-        <div className="col-3 h-50 d-flex justify-content-end p-0">
-          <div className="col-11 card">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio
-            ratione itaque eum mollitia deleniti iusto dolorum error incidunt
-            maiores commodi totam possimus deserunt distinctio vitae assumenda,
-            minima dicta quos. Nesciunt.
           </div>
         </div>
       </div>

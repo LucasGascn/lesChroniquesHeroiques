@@ -4,7 +4,7 @@ import axios from "axios";
 function AddClass(props) {
   const [completeClass, setCompleteClass] = useState({
     name: "",
-    stat: [],
+    stats: [],
   });
   const [statName, setStatName] = useState("");
   const [statBase, setStatBase] = useState("");
@@ -38,10 +38,10 @@ function AddClass(props) {
       value: statBase,
       max: statMax,
     };
-    const stats = [...completeClass.stat];
+    const stats = [...completeClass.stats];
     stats.push(newStat);
     setCompleteClass((obj) => ({
-      stat: stats,
+      stats: stats,
       name: obj.name,
     }));
   };
@@ -53,7 +53,7 @@ function AddClass(props) {
       return;
     }
     setCompleteClass((obj) => ({
-      stat: obj.stat,
+      stats: obj.stats,
       name: testName.current.value,
     }));
     console.log(completeClass);
@@ -107,7 +107,7 @@ function AddClass(props) {
               className="border p-2"
               style={{ overflowY: "scroll", maxHeight: "90%" }}
             >
-              {completeClass.stat.map((element, index) => {
+              {completeClass.stats.map((element, index) => {
                 console.log(element);
                 return (
                   <div key={index}>
