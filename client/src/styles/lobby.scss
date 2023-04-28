@@ -1,0 +1,12 @@
+.container__popup-buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3vh;
+}
+
+.container__popup-buttons > div{
+    padding: 0 2vw;
+    background-color: var(primary);
+}
+

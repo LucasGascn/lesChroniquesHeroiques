@@ -102,7 +102,7 @@ const Home = ({ ...props }) => {
     <div className="home__content">
       <p id="home__title">Lancez vous dans une nouvelle aventure !</p>
       <div className="home__start">
-        <div>
+        <div className="home__start__buttons">
           <Button size="lg" onClick={() => handleOpen()}>
             Créer
           </Button>

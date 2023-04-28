@@ -1,5 +1,6 @@
 @import "./nav.css";
 @import "./parallax.css";
+@import "./lobby.scss";
 
 @mixin mouseLeave-bubble {
   top: 0;
@@ -116,23 +117,18 @@ body {
 }
 
 .home__start {
-  width: 60%;
+  padding: 0 10vw;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .home__start button {
-  margin: 15px 40px;
-  height: 100%;
+  width: 10vw;
 }
 
 .home__start__buttons {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  width: 60%;
-  height: 100px;
-  margin-bottom: 150px;
+  padding-bottom: 20px;
 }
 
 .home__aventures {
@@ -178,11 +174,11 @@ body {
 }
 
 .description.description--left {
-  margin-left: 30%;
+  margin-left: 40vw;
 }
 
 .description.description--right {
-  margin-right: 30%;
+  margin-right: 40vw;
 }
 
 .fade-in {
@@ -210,6 +206,10 @@ body {
   position: relative;
   padding: 30px;
   margin: 10px;
+}
+
+.home__grid-container {
+  padding: 10vh;
 }
 
 .home__table__image > img {
