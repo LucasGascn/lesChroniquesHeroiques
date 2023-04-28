@@ -1,13 +1,53 @@
-// import Save from "./save";
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
+
+
+import Button from 'react-bootstrap/Button';
+
+import Description from "./description";
+import Image from 'react-bootstrap/Image';
+import Table from '../../assets/images/table.png'
+import Adventurer from '../../assets/images/wizard.png'
+import MJ from '../../assets/images/mj-icon.png'
+import Univers from '../../assets/images/fantasy.png'
+import Bulle from './bulles'
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Dialog from "@mui/material/Dialog";
 import AdventurePopUp from "./adventurePopUp";
 
-const Home = () => {
+const bulles = [
+    {
+        name: "univers",
+        image: Univers,
+        text: "L'univers",
+        content: "Votre personnage progresse dans un univers dépendant de l'imaginaire du maître de jeu. Il peut être issu de différentes périodes ou inspirés de multiples ouvrages construisant son Histoire et ses habitants fantasmagoriques. De la science fiction au lovecraft en passant par les croisades, vos héros seront démenés à la découverte des recoins de ces mondes chimériques."
+    },
+    {
+        name: 'aventurier',
+        image: Adventurer,
+        text: "L'aventurier",
+        content: "C’est à vous d’interpréter votre aventurier, d’interagir comme si vous étiez à sa place et de décider librement de ses actions. Choisir votre Personnage est donc un moment-clé. Vous allez être l’un des héros de l’histoire qui sera racontée. Alors faites le bon choix !"
+    },
+    {
+        name: "mj",
+        image: MJ,
+        text: "Le maître du jeu",
+        content: "Le MJ a un rôle central dans le JDR. Il en a même plusieurs : scénariste (il prépare le scénario), conteur (il raconte l’histoire et décrit les situations), acteur (il incarne les personnages que les PJ ne jouent pas), et même arbitre si besoin (c’est à lui de trancher en cas de litige sur les règles).",
+    }
+]
+
+const description = [
+    {
+        direction: 'right',
+        content: "Le JDR est un jeu de société collaboratif dans lequel les joueurs travaillent ensemble pour créer une histoire. Les joueurs créent des personnages en utilisant des fiches de personnages qui décrivent les compétences, les caractéristiques et les traits de leur personnage. Le maître du jeu crée un monde imaginaire et décrit les événements qui se produisent dans cet univers. Les joueurs interagissent avec cet univers en prenant des décisions et en effectuant des actions qui sont résolues en utilisant des dés."
+    },
+    {
+        direction: 'left',
+        content: "Le maître du jeu est responsable de créer des scénarios, de décrire les lieux, les personnages avatar et les événements qui se produisent dans le monde imaginaire. Le maître du jeu joue également les personnages non-joueurs qui interagissent avec les personnages des joueurs. Les joueurs peuvent interagir avec l'environnement, résoudre des énigmes, combattre des ennemis, négocier avec des personnages non-joueurs et accomplir des quêtes. Le JDR est un jeu très flexible qui permet aux joueurs d'utiliser leur imagination pour créer des histoires uniques."
+    }
+]
+
+const Home = ({ ...props }) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const userJson = JSON.parse(localStorage.getItem("user"));
@@ -62,7 +102,7 @@ const Home = () => {
     <div className="home__content">
       <p id="home__title">Lancez vous dans une nouvelle aventure !</p>
       <div className="home__start">
-        <div>
+        <div className="home__start__buttons">
           <Button size="lg" onClick={() => handleOpen()}>
             Créer
           </Button>
@@ -116,28 +156,18 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="home__desc">
-        <p id="home__desc__1">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut quis
-          ullamcorper velit. Quisque varius justo vel tempus tincidunt. Sed at
-          ligula eu quam pulvinar semper. Etiam luctus, ipsum venenatis bibendum
-          consectetur, leo dui hendrerit neque, sagittis volutpat risus neque et
-          metus. Donec malesuada fermentum tellus non faucibus. Pellentesque
-          habitant morbi tristique senectus et netus et malesuada fames ac
-          turpis egestas. Nunc non fermentum mauris. Cras eget convallis urna.
-          Aliquam erat volutpat. Phasellus suscipit ornare nisi.
-        </p>
-        <p id="home__desc__2">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut quis
-          ullamcorper velit. Quisque varius justo vel tempus tincidunt. Sed at
-          ligula eu quam pulvinar semper. Etiam luctus, ipsum venenatis bibendum
-          consectetur, leo dui hendrerit neque, sagittis volutpat risus neque et
-          metus. Donec malesuada fermentum tellus non faucibus. Pellentesque
-          habitant morbi tristique senectus et netus et malesuada fames ac
-          turpis egestas. Nunc non fermentum mauris. Cras eget convallis urna.
-          Aliquam erat volutpat. Phasellus suscipit ornare nisi.
-        </p>
-      </div>
+
+
+        <div className="home__desc">
+            {description.map((arg, index) => <Description key={`description-${index}`} {...arg}></Description>)}
+        </div>
+        <div className="home__grid-container">
+            <div className="home__table">
+                <Image className="home__table__image" fluid src={Table}></Image>
+                {bulles.map((arg, index) => <Bulle key={`bulle-${index}`} {...arg}></Bulle>)}
+
+            </div>
+        </div>
       <Dialog open={open} onClose={handleClose} fullWidth>
         <AdventurePopUp
           handleClose={handleClose}
@@ -145,7 +175,5 @@ const Home = () => {
         ></AdventurePopUp>
       </Dialog>
     </div>
-  );
-};
-
-export default Home;
+)};
+export default Home

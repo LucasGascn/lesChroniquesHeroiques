@@ -12,8 +12,8 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import Background from "../../assets/images/tropical-rain.jpg";
 
-const pages = ["PNJ", "Quêtes", "Fiche personnage"];
 let userNav;
 
 function NavBar() {
@@ -49,7 +49,7 @@ function NavBar() {
   return (
     <AppBar
       position="static"
-      sx={{ backgroundColor: "#f2e7bf", color: "black" }}
+      sx={{ backgroundImage: `url(${Background})`, color: "black" }}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -73,7 +73,7 @@ function NavBar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            Les chroniques Héroïques
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -105,13 +105,6 @@ function NavBar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center" sx={{ color: "black" }}>
-                    {page}
-                  </Typography>
-                </MenuItem>
-              ))}
             </Menu>
           </Box>
           <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
@@ -131,7 +124,7 @@ function NavBar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            Les chroniques Héroïques
           </Typography>
           <Box
             sx={{
@@ -140,20 +133,6 @@ function NavBar() {
               justifyContent: "center",
             }}
           >
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{
-                  my: 2,
-                  display: "block",
-                  margin: "0 2em 0 2em",
-                  color: "black",
-                }}
-              >
-                {page}
-              </Button>
-            ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>

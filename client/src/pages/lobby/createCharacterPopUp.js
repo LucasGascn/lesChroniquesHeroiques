@@ -22,68 +22,8 @@ export default function CreateCharacterPopUp(props) {
   const [name, setName] = useState(null);
   const userId = JSON.parse(localStorage.getItem("user")).user._id;
 
-  const classes = [
-    {
-      name: "Voleur",
-      stats: [
-        {
-          name: "hp",
-          value: 3,
-          max: 10,
-        },
-        {
-          name: "str",
-          value: 10,
-          max: 100,
-        },
-      ],
-    },
-    {
-      name: "Mage",
-      stats: [
-        {
-          name: "hp",
-          value: 3,
-          max: 10,
-        },
-        {
-          name: "str",
-          value: 10,
-          max: 100,
-        },
-      ],
-    },
-    {
-      name: "Guerrier",
-      stats: [
-        {
-          name: "hp",
-          value: 3,
-          max: 10,
-        },
-        {
-          name: "str",
-          value: 10,
-          max: 100,
-        },
-      ],
-    },
-    {
-      name: "Prêtre",
-      stats: [
-        {
-          name: "hp",
-          value: 3,
-          max: 10,
-        },
-        {
-          name: "str",
-          value: 10,
-          max: 100,
-        },
-      ],
-    },
-  ];
+  const classes = props.adventure.classes;
+
 
   const [characterClass, setCharacterClass] = React.useState("");
   const [className, setClassName] = React.useState("");

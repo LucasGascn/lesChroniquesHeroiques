@@ -1,0 +1,44 @@
+.closeLock {
+  width: 3vw;
+}
+.openLock {
+  width: 3vw;
+}
+.mj__grid-form {
+  padding: 3vw 0;
+  display: flex;
+  flex-direction: column;
+  width: 41vw;
+  align-items: center;
+}
+.mj__grid-form h3 {
+  padding-bottom: 1.5vw;
+}
+.mj__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+.mj__grid #div_1 {
+  grid-area: 1/1/2/2;
+}
+.mj__grid #div_2 {
+  grid-area: 1/2/2/3;
+}
+.mj__grid #div_3 {
+  grid-area: 2/1/3/3;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.mj__grid #div_3 h3 {
+    width: 100%;
+    text-align: center;
+}
+
+.classes__form{
+    display: flex;
+    flex-direction: column;
+    padding: 2vh 0;
+}
+
