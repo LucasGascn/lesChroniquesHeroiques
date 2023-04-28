@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
-import io, { Manager } from "socket.io-client";
+import io from "socket.io-client";
 import axios from "axios";
-import { useEffect, useState, useRef, useContext, useReducer } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CreateCharacterPopUp from "./createCharacterPopUp";
 import CharacterInfosPopUp from "./characterInfosPopUp";
@@ -34,22 +34,20 @@ export default function Lobby(props) {
 
   function JoinRoom() {
     adventure.players.push(userId);
-    axios
-      .post(`/joinAdventure/${id}`, { playerId: userId })
-      .then((response) => {
-        // console.log(response);
-      });
+    axios.post(`/joinAdventure/${id}`, { playerId: userId });
   }
 
   async function getCharacters(id) {
     await axios.get(`/getPlayerByAdventure/${id}`).then((response) => {
       setCharacters(response.data.data);
-      // console.log(response.data.data)
 
       checkUserChar(response.data.data);
     });
   }
 
+  const launchGame = () => {
+    axios.post("/launchGame/" + id);
+  };
   const handleOpen = () => {
     setOpen(true);
   };
@@ -68,7 +66,7 @@ export default function Lobby(props) {
 
   useEffect(function () {
     setSocket(
-      io.connect("http://localhost:5000/game", {
+      io.connect("http://10.160.33.12:5000/game", {
         query: {
           userId,
         },
@@ -89,22 +87,15 @@ export default function Lobby(props) {
 
   useEffect(() => {
     if (socket) {
-      socket.on("roomJoined", (msg) => {
-        // console.log(msg);
-        for (let i = 0; i < characters.length; i++) {
-          if (characters[i]._id != msg.user._id) {
-            //characters.push(msg.user);
-          }
-        }
-
-        // console.log(characters)
-      });
       socket.on("UpdateAdventure", (msg) => {
         setAdventure(msg);
       });
       socket.on("newCharacter", (msg) => {
         setCharacters(msg);
         console.log(msg);
+      });
+      socket.on("launchGame", () => {
+        navigate("/world");
       });
     }
   }, [socket]);
@@ -140,7 +131,7 @@ export default function Lobby(props) {
 
   function checkUserChar(chars) {
     chars.map((element) => {
-      if (element.userId == userId) {
+      if (element.userId === userId) {
         setCurrentUserChar(element);
       }
     });
@@ -172,30 +163,22 @@ export default function Lobby(props) {
           <Button onClick={() => leaveRoom()}>leave</Button>
           <span>{adventure.name}</span>
           <div>
-            <Button size="lg" onClick={() => handleOpen()}>
-              {currentUserChar ? "Fiche personnage" : "Créer mon personnage"}
-            </Button>
+            {adventure.gameMaster === userId ? (
+              <Button size="lg" onClick={() => launchGame()}>
+                {"Lancer la partie"}
+              </Button>
+            ) : (
+              <Button size="lg" onClick={() => handleOpen()}>
+                {currentUserChar ? "Fiche personnage" : "Créer mon personnage"}
+              </Button>
+            )}
           </div>
         </div>
       </div>
       <div className="row card mt-3 d-flex flex-column align-items-center">
         <span className="w-25 text-center m-1">Description</span>
         <div className="col">
-          <span>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos
-            possimus error sint! Placeat sequi perspiciatis inventore saepe
-            aspernatur mollitia, minus dignissimos porro, provident doloremque
-            ipsa impedit expedita pariatur nisi voluptatibus explicabo autem ex
-            facere, quidem officia? Repellat velit, minima totam iste accusamus
-            fugit tempora culpa deserunt veritatis sit perspiciatis
-            reprehenderit distinctio vero accusantium at quidem nihil rem dicta
-            eveniet? Beatae itaque distinctio eum! Rerum explicabo nemo
-            voluptate sequi, neque ea! Quod, hic atque, vero quidem, molestias
-            dignissimos odio nemo assumenda magnam quibusdam deserunt blanditiis
-            perspiciatis consequatur ipsam ratione animi nihil dolore!
-            Cupiditate possimus iste culpa maiores. Labore architecto quos
-            totam.
-          </span>
+          <span>{adventure.description}</span>
         </div>
       </div>
       <div className="row mt-3 d-flex justify-content-between">

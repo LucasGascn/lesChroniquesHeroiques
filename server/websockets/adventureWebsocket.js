@@ -61,6 +61,11 @@ module.exports = (mongoose, io, app) => {
       res.send({ status_message: "déjà dans l'aventure", user: user });
     }
   });
+
+  app.post("/launchGame/:id", async (req) => {
+    const adventureId = req.params.id;
+    io.of("/game").to(adventureId).emit("launchGame");
+  });
   gameNamespace.on("connection", async (socket) => {
     const userId = socket.handshake.query.userId;
     const user = await User.findById(new ObjectId(userId));
