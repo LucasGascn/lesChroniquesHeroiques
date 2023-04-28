@@ -1,13 +1,11 @@
 module.exports = (mongoose, io, app) => {
   const { ObjectId } = require("mongodb");
-  const CharacterSchema = require("../Schema/playerInfoSchema");
-  const adventureSchema = require("../Schema/adventureSchema");
-  const userSchema = require("../Schema/userSchema");
 
   const gameNamespace = io.of("/game");
+  const userSchema = require("../Schema/userSchema");
   const User = mongoose.model("Users", userSchema);
+  const adventureSchema = require("../Schema/adventureSchema");
   const Adventure = mongoose.model("Adventure", adventureSchema);
-  const Character = mongoose.model("Characters", CharacterSchema);
 
   const advWatcher = Adventure.watch();
   advWatcher.on("change", async (change) => {
@@ -43,27 +41,18 @@ module.exports = (mongoose, io, app) => {
       if (soc) {
         soc.join(adventureId);
       }
-
       io.of("/game")
         .to(adventureId)
-        .emit("roomJoined", {
-          message: `${user.fname} a join la room`,
-          user: user,
-        });
+        .emit("roomJoined",{ message: `${user.fname} a join la room`, user: user});
     }
     if (!adventure.players.includes(playerId)) {
       adventure.players.push(playerId);
 
       adventure.save();
-      res.send({ stats_message: "Bien ajouté", user: user });
+      res.send({stats_message: "Bien ajouté", user: user});
     } else {
-      res.send({ status_message: "déjà dans l'aventure", user: user });
+      res.send("déjà dans l'aventure");
     }
-  });
-
-  app.post("/launchGame/:id", async (req) => {
-    const adventureId = req.params.id;
-    io.of("/game").to(adventureId).emit("launchGame");
   });
   gameNamespace.on("connection", async (socket) => {
     const userId = socket.handshake.query.userId;
@@ -140,7 +129,7 @@ module.exports = (mongoose, io, app) => {
           await room.save();
           await User.findOneAndUpdate({ _id: player.id }, { roomId: null });
           socket.leave(room._id.toString());
-          // socket.disconnect();
+          socket.disconnect();
           //console.log(`Joueur ${player.fname} a quitté la room ${room.name}`);
           res.send("ok");
         }

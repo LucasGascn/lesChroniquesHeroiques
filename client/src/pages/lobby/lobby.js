@@ -66,7 +66,7 @@ export default function Lobby(props) {
 
   useEffect(function () {
     setSocket(
-      io.connect("http://10.160.33.12:5000/game", {
+      io.connect("http://localhost:5000/game", {
         query: {
           userId,
         },
