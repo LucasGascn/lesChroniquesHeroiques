@@ -20,9 +20,13 @@ import {
 } from "three";
 import { RGBELoader, OrbitControls } from "three-stdlib";
 import { mergeBufferGeometries } from "three/examples/jsm/utils/BufferGeometryUtils";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+
 
 const WorldMap = () => {
+  const {state} = useLocation();
+  const adventureId = state.adventureId;
+
   const windowSize = useRef([window.innerWidth, window.innerHeight]);
   const mount = useRef(null);
 
@@ -240,7 +244,7 @@ const WorldMap = () => {
         }
 
         onClick(e) {
-          navigate("/hexmap", { replace: true });
+          navigate("/hexmap", { state : { replace: true, adventureId: adventureId }});
           window.removeEventListener("click", e);
           window.removeEventListener("pointermove", e);
         }

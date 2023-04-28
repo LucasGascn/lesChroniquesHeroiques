@@ -18,7 +18,7 @@ const DiceManager = () => {
     let diceValue = Math.random() * (max - min) + min;
     diceValue = Math.round(diceValue);
 
-    let message = "vous faites un " + diceValue;
+    let message = "Vous lancez un D" + max + " vous faites un " + diceValue;
     setMessages([message, ...messages]);
     console.log(messages);
   };
@@ -44,7 +44,6 @@ const DiceManager = () => {
             return <p>{message}</p>;
           })}
         </div>
-        <div></div>
       </div>
     </>
   );

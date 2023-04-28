@@ -87,6 +87,9 @@ export default function Lobby(props) {
 
   useEffect(() => {
     if (socket) {
+      socket.on("roomJoined", (msg) => {
+        console.log(msg);
+      });
       socket.on("UpdateAdventure", (msg) => {
         setAdventure(msg);
       });
@@ -94,8 +97,8 @@ export default function Lobby(props) {
         setCharacters(msg);
         console.log(msg);
       });
-      socket.on("launchGame", () => {
-        navigate("/world");
+      socket.on("launchGame", (msg) => {
+        navigate("/world", { state: { adventureId : msg}});
       });
     }
   }, [socket]);

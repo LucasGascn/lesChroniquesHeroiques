@@ -15,9 +15,15 @@ import {
 import { RGBELoader, OrbitControls} from 'three-stdlib'
 import { mergeBufferGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils'
 import { SimplexNoise } from "simplex-noise"
-
+import DiceManager from "./DiceManager"
+import { Button } from "@mui/material";
+import axios from 'axios'
+import { useLocation } from "react-router-dom";
 
 const Hexmap = () => {
+    const { state } = useLocation();
+    const adventureId = state.adventureId;
+
     const mount = useRef(null)
     // const [reactScene, setReactScene] = useState()
     const loadEnvMapTexture = async(renderer) => {
@@ -40,7 +46,9 @@ const Hexmap = () => {
         return textures;
     }
 
-    
+    const launchGame = () => {
+        axios.post("/launchGame/" + adventureId);
+    };
 
     const windowSize = useRef([window.innerWidth, window.innerHeight])
 
@@ -313,7 +321,15 @@ const Hexmap = () => {
     },[])
 
     return(
-        <div ref={mount} />
+        <>
+            <button className='nextQuest' onClick={() => launchGame()}>
+                Prochaine quête
+            </button>
+            <div>
+                <DiceManager></DiceManager>
+            </div>
+            <div ref={mount} />
+        </>
     )
 }
 export default Hexmap

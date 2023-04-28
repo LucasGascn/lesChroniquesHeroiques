@@ -1,13 +1,10 @@
-#diceListContainer{
+.dtContainer{
     position: absolute;
     top: 70px;
     right: 10px;
     display: flex;
-}
-
-.dtContainer{
-    max-height:max-content;
-    max-width:247px;
+    max-height:200px;
+    max-width:272px;
     display: flex;
     flex-direction: column;
 }
@@ -17,4 +14,10 @@
     display:flex;
     flex-direction: column-reverse;
     overflow-y: hidden;
+}
+
+.nextQuest{
+    position: absolute;
+    top: 70px;
+    left: 10px;
 }
