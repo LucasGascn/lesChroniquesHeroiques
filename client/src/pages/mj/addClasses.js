@@ -15,12 +15,17 @@ function AddClass(props){
           return;
         }
         const newClass = {
-            nomClasse: className,
-            nomState: statName,
-            valeurBase: statBase,
-            statMax: statMax
+            name: className,
+            stats :
+            {
+                name: statName,
+                value: statBase,
+                max: statMax
+            }
+            
         };
         try {
+            props.adventure.classes.push(newClass)
           await axios.post(`/updateAdventure/${props.adventure._id}`, { classe: newClass });
           console.log('Une nouvelle classe a été ajouté');
           setClassName('');
