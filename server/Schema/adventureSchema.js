@@ -6,6 +6,7 @@ const adventureSchema = mongoose.Schema(
     gameMaster: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
     description: String,
     size: Number,
+    activPlayer: [mongoose.Schema.Types.ObjectId],
     quests: [],
     pnj: [],
     classes: [],
