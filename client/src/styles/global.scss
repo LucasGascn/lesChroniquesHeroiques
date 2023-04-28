@@ -1,7 +1,7 @@
 @import "./nav.css";
 @import "./parallax.css";
 @import "./lobby.scss";
-
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
 @mixin mouseLeave-bubble {
   top: 0;
   left: 0;
@@ -92,7 +92,9 @@ body {
 }
 
 .App {
-  position: relative;
+  font-family: 'Josefin Sans', sans-serif;
+      position: relative;
+
   min-height: 100vh;
 }
 
@@ -117,10 +119,11 @@ body {
 }
 
 .home__start {
-  padding: 0 10vw;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  padding: 0 10vw;
 }
 
 .home__start button {
@@ -129,11 +132,6 @@ body {
 
 .home__start__buttons {
   padding-bottom: 20px;
-}
-
-.home__aventures {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
 }
 
 .home__aventures > div {
@@ -157,6 +155,7 @@ body {
 
 .home__saves {
   margin: 40px;
+  width: 50vw;
 }
 
 .home__desc {

@@ -168,10 +168,17 @@ export default function Lobby(props) {
 
   return (
     <div className="container">
+<<<<<<< HEAD
+      <div className="container__popup-buttons" >
+        <PopUpPnj adventure={adventure}/>
+        <PopUpQuest adventure={adventure}/>
+        <PopUpMj adventure={adventure}/>
+=======
       <div className="container__popup-buttons" color="primary">
         <PopUpPnj adventure={adventure} />
         <PopUpQuest adventure={adventure} />
         <PopUpMj adventure={adventure} />
+>>>>>>> 6b58917906b9d46bb35de026ec63fab9c35176b4
       </div>
 
       <div className="row card  mt-3">
