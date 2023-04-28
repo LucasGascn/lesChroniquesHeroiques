@@ -4,6 +4,7 @@ let theme = createTheme({
   palette: {
     primary: {
       main: '#032e2d',
+      light:'#5e0f67',
     },
     secondary: {
       main: '#f4fffd',

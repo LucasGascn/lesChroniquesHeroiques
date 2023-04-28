@@ -174,7 +174,7 @@ export default function Lobby(props) {
 
   return (
     <div className="container">
-      <div className="container__popup-buttons" color="primary" >
+      <div className="container__popup-buttons" >
         <PopUpPnj adventure={adventure}/>
         <PopUpQuest adventure={adventure}/>
         <PopUpMj adventure={adventure}/>

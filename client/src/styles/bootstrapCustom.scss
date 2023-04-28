@@ -7,3 +7,7 @@ $theme-colors: (
   );
 
   @import '~bootstrap/scss/bootstrap.scss';
+:root{
+  --bs-link-hover-color:#0c3938;
+  --bs-link-color:#f4fffd;
+}
