@@ -23,7 +23,6 @@ module.exports = (mongoose, io, app) => {
       const characters = await Character.find({
         adventureId: change.fullDocument.adventureId,
       });
-
       io.of("/game")
         .to(change.fullDocument.adventureId.toString())
         .emit("newCharacter", characters);

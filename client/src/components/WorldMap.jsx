@@ -54,24 +54,24 @@ const WorldMap = () => {
     raycaster.setFromCamera(mouse, camera);
     intersects = raycaster.intersectObjects(scene.children, true);
 
-    Object.keys(hovered).forEach((key) => {
-      const hit = intersects.find((hit) => hit.object.uuid === key);
-      if (hit === undefined) {
-        const hoveredItem = hovered[key];
-        if (hoveredItem.object.onPointerOver)
-          hoveredItem.object.onPointerOut(hoveredItem);
-      }
-    });
-    console.log(mouse);
+    // Object.keys(hovered).forEach((key) => {
+    //   const hit = intersects.find((hit) => hit.object.uuid === key);
+    //   if (hit === undefined) {
+    //     const hoveredItem = hovered[key];
+    //     if (hoveredItem.object.onPointerOver)
+    //       hoveredItem.object.onPointerOut(hoveredItem);
+    //   }
+    // });
+    // console.log(mouse);
 
-    intersects.forEach((hit) => {
-      if (!hovered[hit.object.uuid]) {
-        hovered[hit.object.uuid] = hit;
-        if (hit.object.onPointerOver) hit.object.onPointerOver(hit);
-      }
+    // intersects.forEach((hit) => {
+    //   if (!hovered[hit.object.uuid]) {
+    //     hovered[hit.object.uuid] = hit;
+    //     if (hit.object.onPointerOver) hit.object.onPointerOver(hit);
+    //   }
 
-      if (hit.object.onPointerMove) hit.object.onClick(hit);
-    });
+    //   if (hit.object.onPointerMove) hit.object.onClick(hit);
+    // });
   });
 
   window.addEventListener("click", (e) => {
