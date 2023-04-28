@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import "./bootstrapCustom.scss";
-import "./styles/global.css";
+import "./styles/bootstrapCustom.scss";
+import "./styles/global.scss";
 import axios from "axios";
 //import "bootstrap/dist/css/bootstrap.min.css";
 axios.defaults.baseURL = "http://localhost:5000";

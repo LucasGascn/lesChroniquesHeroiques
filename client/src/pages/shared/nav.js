@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import Background from "../../assets/images/tropical-rain.jpg";
 
 const pages = ["PNJ", "Quêtes", "Fiche personnage"];
 let userNav;
@@ -49,7 +50,7 @@ function NavBar() {
   return (
     <AppBar
       position="static"
-      sx={{ backgroundColor: "#f2e7bf", color: "black" }}
+      sx={{ backgroundImage: `url(${Background})`, color: "black" }}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
