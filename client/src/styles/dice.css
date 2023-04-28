@@ -1,0 +1,20 @@
+#diceListContainer{
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    display: flex;
+}
+
+.dtContainer{
+    max-height:max-content;
+    max-width:247px;
+    display: flex;
+    flex-direction: column;
+}
+
+.diceTextBox{
+    height:400px;
+    display:flex;
+    flex-direction: column-reverse;
+    overflow-y: hidden;
+}

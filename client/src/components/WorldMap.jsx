@@ -12,15 +12,67 @@ import {
      PerspectiveCamera, WebGLRenderer, 
      ACESFilmicToneMapping, TextureLoader, 
      sRGBEncoding, Mesh, Color} from 'three'
-     import { RGBELoader, OrbitControls} from 'three-stdlib'
-     import { mergeBufferGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils'
+import { RGBELoader, OrbitControls} from 'three-stdlib'
+import { mergeBufferGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils'
+import { useNavigate } from "react-router-dom";
+
 
 
 
 const WorldMap = () =>{
-
-    const mount = useRef(null)
     const windowSize = useRef([window.innerWidth, window.innerHeight])
+    const mount = useRef(null)
+
+    const navigate = useNavigate()
+
+    const scene = new Scene()
+    scene.background = new Color("#f3daa1")
+
+    let width = windowSize.current[0];
+    let height = windowSize.current[1];
+    let intersects = [];
+    let hovered = {};
+
+    let mouse = new Vector2()
+    let raycaster = new Raycaster()
+
+    const camera = new PerspectiveCamera(45, windowSize.current[0] / windowSize.current[1], 10, 1000)
+    camera.position.set(0,30,160);
+    let target = new Vector3(0,0,0)
+    camera.lookAt(target)
+
+    
+    window.addEventListener('pointermove',  (e)=>{
+        mouse.set((e.clientX / width)* 2 - 1 , -(e.clientY / height) * 2 + 1)
+        raycaster.setFromCamera(mouse, camera)
+        intersects = raycaster.intersectObjects(scene.children, true)
+
+        Object.keys(hovered).forEach((key)=>{
+            const hit = intersects.find((hit)=> hit.object.uuid === key)
+            if(hit === undefined){
+                const hoveredItem = hovered[key];
+                if (hoveredItem.object.onPointerOver) hoveredItem.object.onPointerOut(hoveredItem)
+            }
+        })
+        console.log(mouse)
+
+        intersects.forEach((hit)=>{
+            if (!hovered[hit.object.uuid]){
+                hovered[hit.object.uuid] = hit
+                if(hit.object.onPointerOver) hit.object.onPointerOver(hit)
+            }
+
+            if(hit.object.onPointerMove) hit.object.onClick(hit)
+        })
+    })
+
+
+    window.addEventListener("click", (e)=>{
+        intersects.forEach((hit)=>{
+            if(hit.object.onClick) hit.object.onClick(hit)
+        })
+    })
+
 
     const loadEnvMapTexture = async(renderer) => {
         // renders the texture of our environment map
@@ -42,13 +94,10 @@ const WorldMap = () =>{
         return textures;
     }
 
+    
+
     useEffect(()=>{
         (async function(){
-            const scene = new Scene()
-            scene.background = new Color("#f3daa1")
-
-            const camera = new PerspectiveCamera(45, windowSize.current[0] / windowSize.current[1], 10, 1000)
-            camera.position.set(-60,80,80);
             
             const renderer = new WebGLRenderer({antialias: true})
             renderer.setSize(windowSize.current[0],windowSize.current[1]) // innerwidth et innerheight
@@ -64,6 +113,7 @@ const WorldMap = () =>{
             controls.enableDamping = true
 
             mount.current.appendChild(renderer.domElement)
+            // mount.current.addEventListener('click', onClick);
 
             let textures = await getTextures();
 
@@ -80,11 +130,8 @@ const WorldMap = () =>{
             light.shadow.camera.near = 0.5
             light.shadow.camera.far = 500
 
-
-
-
             const uniforms = {
-                color: { value: new Color(0xffffff) },
+                color: { value: new Color(0x32a5c9) },
                 heightMap: { value : heightmap }, // displacementMap
                 bumpScale: { value : 24.0}, // displacementScale
             }
@@ -124,7 +171,7 @@ const WorldMap = () =>{
             })
 
             makePlane() // creates a plane and a merge the plane with a central boxGeometry(0,0,0)
-                    // let planeShader = new Mesh(planeGeometries,shader)
+            let mapColor = new Color(0x42974a)
 
             let planeMesh = new Mesh(planeGeometries,
                 new MeshPhysicalMaterial({
@@ -135,8 +182,26 @@ const WorldMap = () =>{
                     displacementScale: 24,
                     roughness: 1,
                     metalness: 0,
+                    color: mapColor,
                 }))
             planeMesh.rotation.x = - Math.PI / 2;
+
+            let seaMesh = new Mesh(
+                new CylinderGeometry(107,107,4.5,4,1),
+                new MeshPhysicalMaterial({
+                    envMap: envmap,
+                    color: new Color("#3884d0").convertSRGBToLinear().multiplyScalar(3),
+                    ior: 1.4,
+                    transmission: 1,
+                    transparent: true,
+                    thickness:1.5,
+                    envMapIntensity: 0.2,
+                    roughness:1,
+                    metalness:0.025,
+                    roughnessMap: textures.water,
+                    metalnessMap: textures.water,
+                })
+            )
 
             let mapContainer = new Mesh(
                 new CylinderGeometry(
@@ -155,22 +220,67 @@ const WorldMap = () =>{
                 })
             )
 
+            let mapFloor = new Mesh(
+                new CylinderGeometry(120, 120, 10 * 0.1, 4, 1),
+                new MeshPhysicalMaterial({
+                    envMap: envmap,
+                    map: textures.dirt2,
+                    envMapIntensity: 0.1,
+                    side: DoubleSide,
+                })
+            )
+            mapFloor.rotation.y = 0.8
             mapContainer.rotation.y = 0.8
+            seaMesh.rotation.y = 0.8
+
+            // window.addEventListener('click',onClick)
+
+            // planeMesh.addEventListener('click',onClick)
 
             // const shadeMesh = new Mesh(planeGeometries,shader)
             // shadeMesh.rotation.x = - Math.PI / 2;
-            scene.add(planeMesh, mapContainer,light)
 
-            // let mouse = new Vector2()
-            // let raycaster = new Raycaster()
+            class clickablePlane extends Mesh {
+                //Creates a plane with Onclick pointerOn and pointerOut event
+                //to get coords for the mouse, and redirect to /hexMap on click
+                constructor(){
+                    super()
+                    this.geometry = new PlaneGeometry(150,150,285,285)
+                    this.material = new MeshPhysicalMaterial({
+                        envMap: envmap,
+                        flatShading: true,
+                        side: DoubleSide,
+                        displacementMap: heightmap,
+                        displacementScale: 24,
+                        roughness: 1,
+                        metalness: 0,
+                        color: new Color(0x42974a),
+                    })
+                }
+        
+                onClick(e) {
+                    navigate("/hexmap",{replace: true})
+                    window.removeEventListener("click",(e))
+                    window.removeEventListener("pointermove",(e))
+                }
 
-            // window.addEventListener('pointHexMap', (e)=>{
-            //     mouse.set((e.clientX / width * 2 - 1, -(e.clientY / height) * 2 + 1))
-            //     raycaster.setFromCamera(mouse, camera)
-            // })
-            
-    
-            
+                onPointerOver(e){
+                    console.log("over")
+                    // this.material.color.set('hotpink')
+                    // this.material.color.convertSRGBToLinear()
+                }
+
+                onPointerOut(e){
+                    console.log("out")
+                    // this.material.color.set(new Color(0x42974a))
+                    // this.material.color.convertSRGBToLinear()
+                }
+            }
+
+            let clickPlane = new clickablePlane();
+
+            clickPlane.rotation.x = - Math.PI / 2;
+            scene.add( clickPlane, mapContainer, mapFloor,seaMesh, light)
 
             renderer.setAnimationLoop(()=>{
                 controls.update()
