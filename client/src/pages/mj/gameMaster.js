@@ -6,9 +6,9 @@ function GameMaster(props){
 
     return(
         <>
-            <AddPnj />
-            <AddQuest />
-            <AddClass />
+            <AddPnj  adventure={props.adventure}/>
+            <AddQuest  adventure={props.adventure}/>
+            <AddClass  adventure={props.adventure}/>
         </>
     )
 }

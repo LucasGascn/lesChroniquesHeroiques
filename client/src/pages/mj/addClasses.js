@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-function AddClass(){
+function AddClass(props){
     
     const [className, setClassName] = useState('') 
     const [statName, setStatName] = useState('') 
@@ -16,12 +16,13 @@ function AddClass(){
         }
         const newClass = { nomClasse: className,nomState: statName,valeurBase: statBase,statMax: statMax};
         try {
-          await axios.post(`/updateAdventure/`, { classe: newClass });
+          await axios.post(`/updateAdventure/${props.adventure._id}`, { classe: newClass });
           console.log('Une nouvelle classe a été ajouté');
           setClassName('');
           setStatName('');
           setStatBase('');
           setStatMax('');
+          console.log(props.adventure._id);
         } catch (error) {
             console.error("Echec d'ajout de PNJ", error);
         }

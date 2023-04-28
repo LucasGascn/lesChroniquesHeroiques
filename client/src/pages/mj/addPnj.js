@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 
 
-function AddPnj() {
+function AddPnj(props) {
   const [pnjName, setPnjName] = useState('');
   const [pnjSurname, setPnjSurname] = useState('');
   const [pnjDescription, setPnjDescription] = useState('');
@@ -17,7 +17,7 @@ function AddPnj() {
     }
     const newPnj = { nom: pnjName,prenom: pnjSurname,description: pnjDescription,status: 'lock'};
     try {
-      await axios.post(`/updateAdventure/`, { pnj: newPnj });
+      await axios.post(`/updateAdventure/${props.adventure._id}`, { adventure: newPnj });
       console.log('Un nouveau PNJ a été ajouté');
       setPnjName('');
       setPnjSurname('');

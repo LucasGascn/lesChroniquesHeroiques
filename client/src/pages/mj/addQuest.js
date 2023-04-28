@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 
 
-function AddQuest() {
+function AddQuest(props) {
   const [questName, setQuestName] = useState('');
   const [questReward, setQuestReward] = useState('');
   const [questDescription, setQuestDescription] = useState('');
@@ -14,6 +14,8 @@ function AddQuest() {
       setError('Veuillez remplir tous les champs');
       return;
     }
+    console.log(props.adventure._id);
+
     const newQuest = {
       name: questName,
       reward: questReward,
@@ -21,13 +23,14 @@ function AddQuest() {
       status: 'lock'
     };
     try {
-      await axios.post('/updateAdventure', { quest: newQuest });
+      await axios.post(`/updateAdventure/`+ props.adventure._id, { adventure: newQuest });
       console.log('Une nouvelle quête a été ajoutée');
       // réinitialiser les champs de formulaire
       setQuestName('');
       setQuestReward('');
       setQuestDescription('');
       setError('');
+
     } catch (error) {
       console.error("Echec d'ajout de quête", error);
     }
