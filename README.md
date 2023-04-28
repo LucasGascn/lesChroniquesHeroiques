@@ -26,7 +26,12 @@ npm run dev
 
 You can start a campaign or join a new one, create your character, and start the adventure as a DM, or a player. You Land on the worldMap, and from there you're free to explore and play as a regular tabletop game.
 
-This website is meant as a support for your campaigns rather than a game.
+You can create characters if you're a player and even you own class, stats and everything in between.
+Craft your own adventure as a DM, from quests to overall scenario with NPCs.
+
+A dice manager is implemented along the battlemaps to help you in those social-distant context.
+
+This website is meant as a support for your campaigns rather than a game but we'll be adding character 3D figures, 3D dices and multiple worldmaps in the future to provide an even better and complete experience for you and your fellow players.
 ***
 
 **Credits**
