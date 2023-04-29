@@ -13,7 +13,7 @@ module.exports = (mongoose, io, app) => {
   advWatcher.on("change", async (change) => {
     if (change.operationType == "update") {
       const adv = await Adventure.findById(change.documentKey._id);
-      io.of("/game").to(adv._id).emit("UpdateAdventure", adv);
+      io.of("/game").to(adv._id.toString()).emit("UpdateAdventure", adv);
     }
   });
 
