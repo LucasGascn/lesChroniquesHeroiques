@@ -34,7 +34,7 @@ function AdventurePnj(props){
     if ( userId !== adventure.gameMaster ){
       return(
         <div>
-          <h1>La liste des quêtes disponibles</h1>
+          <h1>La liste des pnjs disponibles</h1>
           {pnjs.map((pnj, index) => (
             adventure.pnj[index].status === 'unlock' &&
             <div key={index}>

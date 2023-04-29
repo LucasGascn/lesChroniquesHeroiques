@@ -1,6 +1,9 @@
 @import "./nav.css";
 @import "./parallax.css";
 @import "./lobby.scss";
+@import "./hex.css";
+@import "./dice.css";
+
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
 @mixin mouseLeave-bubble {
   top: 0;

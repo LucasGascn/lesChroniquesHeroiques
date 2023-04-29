@@ -61,7 +61,7 @@ export default function AdventurePopUp(props) {
   return (
     <div>
       <DialogTitle sx={{ textAlign: "center" }}>
-        Créer votre aventure
+        Créez votre aventure
       </DialogTitle>
       <DialogContent>
         <TextField
@@ -79,7 +79,7 @@ export default function AdventurePopUp(props) {
         <TextField
           margin="dense"
           id="name"
-          label="Déscription de l'aventure"
+          label="Description de l'aventure"
           multiline
           fullWidth
           rows={4}

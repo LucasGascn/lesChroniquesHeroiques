@@ -23,7 +23,7 @@ function AdventureQuests(props){
       newAdventure.quests[index].status = newAdventure.quests[index].status === "lock" ? "unlock" : "lock";
       setAdventure(newAdventure);
 
-      const updateQuestUrl = "/updateAdventure/643fadc533751688af13a15e";
+      const updateQuestUrl = "/updateAdventure/"+props.adventure._id;
       try {
         const response = await axios.post(updateQuestUrl, {adventure : newAdventure});
         console.log(response);
